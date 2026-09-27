@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found · Yann Alam</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<meta name="theme-color" content="#F4F0E4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1612" media="(prefers-color-scheme: dark)">
+<style>
+  /* Served by GitHub Pages for any missing address, at any depth, so every path here is absolute. */
+  @font-face { font-family: 'Instrument Sans'; font-style: normal; font-weight: 400 700; font-stretch: 75% 100%; font-display: swap; src: url(/fonts/InstrumentSans-400_700-latin.woff2) format('woff2'); }
+  @font-face { font-family: 'B612 Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(/fonts/B612Mono-400-latin.woff2) format('woff2'); }
+  :root { --ground: #F4F0E4; --panel: #FBF9F2; --head: #1E3B2F; --ink-2: #3D4A42; --muted: #5F6B63; --rule: #D6CEB8; --cu: #B8703A; --accent: #9A5626; --btn-bg: #1E3B2F; --btn-ink: #F6F2E6; }
+  @media (prefers-color-scheme: dark) { :root { --ground: #0F1612; --panel: #17221C; --head: #EFE9D9; --ink-2: #CBC5B5; --muted: #97A198; --rule: #2C3B33; --cu: #C9824B; --accent: #E29D66; --btn-bg: #EAE3CF; --btn-ink: #10180F; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body { min-height: 100vh; min-height: 100dvh; display: grid; grid-template-rows: auto 1fr; background: var(--ground); color: var(--head);
+         font-family: 'Instrument Sans', 'Helvetica Neue', Arial, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  header { padding: 18px clamp(16px, 4.2vw, 56px); }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; color: var(--head); }
+  .via { width: 14px; height: 14px; border-radius: 50%; border: 3.5px solid var(--cu); background: var(--ground); }
+  main { display: grid; align-content: center; justify-items: start; gap: 18px; padding: 0 clamp(16px, 4.2vw, 56px) 12vh; max-width: 760px; }
+  .k { font-family: 'B612 Mono', ui-monospace, Menlo, monospace; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  h1 { margin: 0; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: .98; letter-spacing: -0.04em; font-stretch: 78%; font-weight: 600; }
+  p { margin: 0; font-size: 1.1rem; line-height: 1.5; color: var(--ink-2); max-width: 38ch; }
+  /* an open circuit: the trace stops short of its pad */
+  svg { display: block; width: min(320px, 70vw); height: auto; margin: 6px 0 4px; }
+  .t { stroke: var(--cu); stroke-width: 2.5; fill: none; stroke-linecap: round; }
+  .pad { fill: var(--ground); stroke: var(--cu); stroke-width: 3; }
+  .gap { stroke: var(--rule); stroke-width: 2.5; stroke-dasharray: 3 6; stroke-linecap: round; }
+  a.btn { display: inline-flex; align-items: center; min-height: 46px; padding: 0 22px; border-radius: 999px; background: var(--btn-bg); color: var(--btn-ink);
+          font-weight: 600; text-decoration: none; transition: translate .35s cubic-bezier(.16,1,.3,1); margin-top: 6px; }
+  a.btn:hover { translate: 0 -1px; }
+  a:focus-visible { outline: 2px solid var(--cu); outline-offset: 3px; border-radius: 999px; }
+</style>
+</head>
+<body>
+  <header><a class="brand" href="/"><span class="via" aria-hidden="true"></span>Yann Alam</a></header>
+  <main>
+    <p class="k">404 · Page not found</p>
+    <h1>This page doesn’t exist.</h1>
+    <svg viewBox="0 0 320 24" aria-hidden="true"><circle class="pad" cx="12" cy="12" r="7"/><path class="t" d="M19 12H170"/><path class="gap" d="M182 12H270"/><circle class="pad" cx="300" cy="12" r="7"/></svg>
+    <p>The link may be old or mistyped. Everything is on the home page.</p>
+    <a class="btn" href="/">Back to the home page</a>
+  </main>
+</body>
+</html>
