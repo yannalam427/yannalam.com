@@ -2925,6 +2925,9 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
       lastFocus = document.activeElement;
       show(id);
       if (sheet.showModal) sheet.showModal(); else sheet.setAttribute('open', '');
+      // a closed dialog isn't laid out, so the reset in show() is ignored and the browser would
+      // restore the last card's scroll position; start every card at the top once it's visible
+      scroller.scrollTop = 0;
       document.documentElement.classList.add('sheet-open');
       document.dispatchEvent(new Event('sheet:open'));
       $('#sheet-close').focus({ preventScroll: true });
