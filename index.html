@@ -171,7 +171,10 @@ body {
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* clip, not hidden: "hidden" turns <body> into a scroll container whenever <html> is locked
+     (a card or the resume is open), which un-pins the sticky top bar; Safari then leaves it lost */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 img, svg, canvas { max-width: 100%; }
 a { color: inherit; }
@@ -2853,6 +2856,19 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     window.addEventListener('scroll', function () { if (isOpen && Math.abs(window.scrollY - openY) > 60) set(false); }, { passive: true });
     var openY = 0; btn.addEventListener('click', function () { openY = window.scrollY; });
     document.addEventListener('sheet:open', function () { set(false); });
+  })();
+
+  /* ---------------- keep the top bar pinned after a card or the resume closes ---------------- */
+  // older Safari (no overflow: clip) can leave a sticky header stuck at its old spot once the scroll
+  // lock is lifted; re-seating it forces a fresh position. Invisible everywhere else.
+  (function repinNav() {
+    var nav = $('.nav'), root = document.documentElement; if (!nav || !window.MutationObserver) return;
+    var locked = root.classList.contains('sheet-open');
+    new MutationObserver(function () {
+      var now = root.classList.contains('sheet-open');
+      if (locked && !now) { nav.style.position = 'relative'; void nav.offsetHeight; nav.style.position = ''; }
+      locked = now;
+    }).observe(root, { attributes: true, attributeFilter: ['class'] });
   })();
 
   /* ---------------- notes-for-Yann toggle ---------------- */
