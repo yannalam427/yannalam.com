@@ -2609,13 +2609,18 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     var halfH = Math.atan(Math.tan(halfV) * camera.aspect);
     baseR = Math.max(8.6 / Math.tan(halfH), 6.6 / Math.tan(halfV));
     camera.updateProjectionMatrix();
+    measure();
     dirty = true;
   }
-  var scrollP = 0;
-  function readScroll() {
-    var r = fig.getBoundingClientRect();
-    scrollP = Math.min(1, Math.max(0, -r.top / (r.height * 1.1)));
-  }
+  /* Scroll: the board eases out as the page scrolls past it. The position is sampled once per rendered frame
+     (from a cached page offset, so no layout work) and glided over ~80 ms, so uneven scroll updates, like the
+     ones phones send while the address bar slides back in on the way up, never show as jitter. */
+  var scrollP = 0, scrollT = 0, figTop = 0, figH = 1, snapScroll = true, measureN = 0;
+  function sy() { return window.scrollY || window.pageYOffset || 0; }
+  function measure() { var r = fig.getBoundingClientRect(); figTop = r.top + sy(); figH = r.height || 1; }
+  function readScroll() { scrollT = Math.min(1, Math.max(0, (sy() - figTop) / (figH * 1.1))); }
+  window.addEventListener('load', measure);
+  window.addEventListener('resize', measure, { passive: true });
 
   /* ---------------- pointer ---------------- */
   var ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), plane0 = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
@@ -2814,6 +2819,10 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   function frame(now) {
     var dt = Math.min(0.05, (now - last) / 1000); last = now;
     clock += dt;
+    if (++measureN % 30 === 0) measure();                 // picks up any late layout shift above the board
+    readScroll();
+    if (snapScroll || reduce) { scrollP = scrollT; snapScroll = false; }
+    else scrollP += (scrollT - scrollP) * (1 - Math.exp(-dt / 0.08));
     if (!reduce) {
       planeT += dt;
       garageTick(dt);
@@ -2888,12 +2897,13 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
 
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (es) {
-      visible = es[0].isIntersecting;
+      var was = visible; visible = es[0].isIntersecting;
+      if (visible && !was) snapScroll = true;
       if (visible && !paused) { cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame); }
-    }, { threshold: 0 }).observe(fig);
+    }, { threshold: 0, rootMargin: '240px 0px' }).observe(fig);
   }
-  document.addEventListener('visibilitychange', function () { if (!document.hidden && visible && !paused) { last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); } });
-  window.addEventListener('scroll', function () { readScroll(); if (reduce) kick(); }, { passive: true });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && visible && !paused) { snapScroll = true; last = performance.now(); cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); } });
+  window.addEventListener('scroll', function () { if (reduce) kick(); }, { passive: true });   // reduced motion draws on demand
   if ('ResizeObserver' in window) new ResizeObserver(function () { resize(); if (reduce) kick(); }).observe(fig);
   else window.addEventListener('resize', resize);
   if (reduce) { fig.addEventListener('pointermove', kick); canvas.addEventListener('pointerdown', kick); }
