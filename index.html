@@ -183,7 +183,6 @@ button { font: inherit; color: inherit; }
 ::selection { background: var(--glow); color: #10180F; }
 
 .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
-.mono { font-family: var(--f-mono); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: 12px; top: -60px; background: var(--btn-bg); color: var(--btn-ink); padding: 10px 14px; border-radius: 8px; z-index: 100; text-decoration: none; }
 .skip:focus { top: 12px; }
@@ -193,7 +192,7 @@ h2 { font-size: clamp(2.1rem, 4.6vw, 3.6rem); line-height: 1.02; letter-spacing:
 h3 { font-size: clamp(1.45rem, 2.4vw, 1.9rem); line-height: 1.12; letter-spacing: -0.02em; font-stretch: 92%; }
 p { margin: 0; text-wrap: pretty; }
 
-.eyebrow, .kicker, .label {
+.eyebrow, .label {
   font-family: var(--f-mono);
   font-size: 0.72rem;
   letter-spacing: 0.1em;
@@ -213,8 +212,6 @@ p { margin: 0; text-wrap: pretty; }
 }
 .btn:hover { transform: translateY(-1px); }
 .btn:active { transform: translateY(0); }
-.btn-ghost { background: transparent; color: var(--head); border-color: var(--rule); }
-.btn-ghost:hover { border-color: var(--accent-line); }
 .btn-small { min-height: 36px; padding: 0 15px; font-size: .86rem; }
 .btn .arr { font-family: var(--f-mono); font-size: .85em; }
 .copy .copy-state { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
@@ -241,7 +238,6 @@ p { margin: 0; text-wrap: pretty; }
 /* ---------- hero ---------- */
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; align-items: center; }
 @media (min-width: 960px) { .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; } }
-@media (min-width: 960px) { .h1-tag { font-size: clamp(2.8rem, 5.3vw, 4.9rem); } }
 .hero-copy { display: grid; gap: 22px; padding-top: 8px; position: relative; z-index: 2; }
 .h1-name { display: block; font-size: clamp(1.35rem, 2.3vw, 1.7rem); letter-spacing: -0.015em; font-weight: 600; color: var(--head); margin-bottom: 14px; font-stretch: 100%; }
 .h1-tag { display: block; font-size: clamp(2.8rem, 14vw, 4.9rem); line-height: .96; letter-spacing: -0.04em; font-stretch: 76%; font-weight: 600; color: var(--head); }
@@ -258,25 +254,6 @@ p { margin: 0; text-wrap: pretty; }
 .no-webgl canvas { display: none; }
 .fig-foot { position: absolute; left: 0; right: 0; bottom: 4px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 16px; pointer-events: none; }
 .fig-cap { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); line-height: 1.4; }
-
-/* recruiter facts */
-.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: clamp(18px, 2.4vw, 28px) 0 0; border-top: 1px solid var(--rule); }
-.facts > div { padding: 18px 20px 20px 0; border-right: 1px solid var(--rule-2); }
-.facts > div + div { padding-left: 20px; }
-.facts > div:last-child { border-right: 0; }
-.facts dt { font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.facts dd { margin: 0; font-size: .98rem; line-height: 1.4; color: var(--head); font-weight: 500; }
-@media (max-width: 900px) {
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .facts > div:nth-child(2) { border-right: 0; }
-  .facts > div:nth-child(3) { padding-left: 0; }
-  .facts > div:nth-child(n+3) { border-top: 1px solid var(--rule-2); }
-}
-@media (max-width: 520px) {
-  .facts { grid-template-columns: minmax(0, 1fr); }
-  .facts > div, .facts > div + div { padding: 14px 0; border-right: 0; }
-  .facts > div + div { border-top: 1px solid var(--rule-2); }
-}
 
 /* ---------- draft notes ---------- */
 .draft {
@@ -295,18 +272,6 @@ p { margin: 0; text-wrap: pretty; }
 }
 .draft-toggle b { color: var(--accent); font-weight: 700; }
 
-/* photo placeholder (drawing frame) */
-.ph {
-  position: relative; display: grid; place-items: center; text-align: center; gap: 6px;
-  aspect-ratio: 4 / 3; width: 100%; max-width: 100%; border-radius: 12px; padding: 20px;
-  border: 1px dashed var(--rule);
-  background:
-    linear-gradient(to right, transparent calc(50% - .5px), var(--rule-2) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
-    linear-gradient(to bottom, transparent calc(50% - .5px), var(--rule-2) calc(50% - .5px) calc(50% + .5px), transparent calc(50% + .5px)),
-    var(--ground);
-}
-.ph span { font-family: var(--f-mono); font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: var(--ground); padding: 4px 8px; }
-.ph b { display: block; color: var(--head); font-family: var(--f-sans); font-size: .95rem; letter-spacing: -0.01em; text-transform: none; font-weight: 600; }
 
 
 /* ---------- flight display ---------- */
@@ -316,9 +281,7 @@ p { margin: 0; text-wrap: pretty; }
 .radar text { font-family: var(--f-mono); letter-spacing: .04em; }
 .radar .ring { fill: none; stroke: var(--rule); stroke-width: 1; }
 .radar .ring-l { fill: var(--muted); font-size: 9px; }
-.radar .tick { stroke: var(--rule); }
 .radar .rwy { stroke: var(--head); stroke-width: 4; stroke-linecap: butt; }
-.radar .rwy-l { fill: var(--head); font-size: 9px; }
 .radar .apt { fill: var(--head); font-size: 11px; font-weight: 700; }
 .radar .appr { stroke: var(--accent-line); stroke-width: 1; stroke-dasharray: 3 4; fill: none; }
 .radar .ac { cursor: pointer; }
@@ -339,32 +302,12 @@ p { margin: 0; text-wrap: pretty; }
 .device { background: linear-gradient(160deg, #24473A, #16302A); border-radius: 18px; padding: 16px 16px 14px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 18px 34px -20px rgba(0,0,0,.55); color: #E9E2CE; position: relative; }
 .device-top { display: flex; justify-content: space-between; align-items: center; font-family: var(--f-mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(233,226,206,.6); margin-bottom: 10px; }
 .device-top .led { width: 6px; height: 6px; border-radius: 50%; background: #7CFFB0; box-shadow: 0 0 8px #7CFFB0; display: inline-block; margin-right: 6px; vertical-align: middle; }
-.lcd {
-  aspect-ratio: 4 / 3; width: 100%; max-width: 100%; border-radius: 6px; background: var(--lcd-bg); color: var(--lcd-ink);
-  font-family: var(--f-mono); padding: 5% 6%; display: grid; grid-template-rows: auto auto 1fr auto; gap: 3%;
-  box-shadow: inset 0 0 0 2px #000, inset 0 0 30px rgba(255, 170, 70, .06);
-  position: relative; overflow: hidden; text-shadow: 0 0 6px rgba(255, 170, 80, .35);
-  container-type: inline-size;
-}
-.lcd::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, rgba(0,0,0,.18) 0 1px, transparent 1px 3px); pointer-events: none; }
-.lcd .l-top { display: flex; justify-content: space-between; font-size: 4.1cqi; color: var(--lcd-dim); letter-spacing: .08em; }
-.lcd .l-top b { color: var(--lcd-ink); font-weight: 400; }
-.lcd .l-call { font-size: 12cqi; line-height: 1; font-weight: 700; letter-spacing: .02em; }
-.lcd .l-type { font-size: 4.3cqi; color: var(--lcd-dim); margin-top: 1.5cqi; }
-.lcd .l-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5cqi 6cqi; align-content: center; }
-.lcd .l-grid div { display: grid; }
-.lcd .l-grid span { font-size: 3.6cqi; color: var(--lcd-dim); letter-spacing: .1em; }
-.lcd .l-grid b { font-size: 7.4cqi; font-weight: 400; font-variant-numeric: tabular-nums; }
-.lcd .l-status { font-size: 4.6cqi; padding: 1.6cqi 2.4cqi; border: 1px solid var(--lcd-ink); letter-spacing: .1em; text-align: center; }
-.lcd .l-status.no { border-color: var(--lcd-dim); color: var(--lcd-dim); }
-.device-bot { display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--f-mono); font-size: .56rem; letter-spacing: .1em; color: rgba(233,226,206,.5); text-transform: uppercase; }
 
 .rules { display: grid; gap: 0; margin-top: 18px; border-top: 1px solid var(--rule-2); }
 .rule { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--rule-2); font-size: .92rem; }
 .rule .rv { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .pf { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 700; color: #fff; background: var(--ok); }
 .pf.fail { background: var(--bad); }
-.rule-result { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0 0; font-weight: 600; color: var(--head); }
 
 
 /* ---------- plant platform ---------- */
@@ -394,12 +337,8 @@ input[type="range"] { width: 100%; accent-color: var(--accent-line); height: 28p
 .path .pd { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--rule); background: var(--panel); margin-top: 2px; transition: all .25s; }
 .path li.lit .pd { border-color: var(--accent-line); background: var(--glow); box-shadow: 0 0 0 4px color-mix(in srgb, var(--glow) 20%, transparent); }
 .path .pk { font-family: var(--f-mono); font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
-.path .pt { font-weight: 600; color: var(--head); font-size: .92rem; line-height: 1.3; }
 .path .pv { font-family: var(--f-mono); font-size: .72rem; color: var(--ink-2); overflow-wrap: anywhere; }
 .app-card { border: 1px solid var(--rule); border-radius: 16px; background: var(--ground); padding: 16px; display: grid; gap: 12px; align-content: start; height: 100%; }
-.app-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; }
-.app-top .tbtn { white-space: nowrap; }
-.app-top .an { font-weight: 600; color: var(--head); }
 .app-card .as { font-family: var(--f-mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .app-read { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .app-read .pct { font-size: 3rem; line-height: 1; font-weight: 600; letter-spacing: -0.04em; color: var(--head); font-variant-numeric: tabular-nums; font-stretch: 86%; }
@@ -426,8 +365,6 @@ input[type="range"] { width: 100%; accent-color: var(--accent-line); height: 28p
 .tbtn:hover { border-color: var(--accent-line); }
 .tbtn[aria-pressed="true"] { background: var(--btn-bg); color: var(--btn-ink); border-color: var(--btn-bg); }
 .tbtn:disabled { opacity: .5; cursor: default; }
-.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
-@media (max-width: 640px) { .two { grid-template-columns: minmax(0, 1fr); } }
 .hide-drafts .draft-item { display: none !important; }
 .draft-item dd { color: var(--accent); }
 
@@ -497,7 +434,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent-line); height: 28p
 }
 
 /* ---------- detail sheet ---------- */
-html.sheet-open { overflow: hidden; }
+html.sheet-open { overflow: hidden; padding-right: var(--sbw, 0px); }   /* keeps the page's width when a classic scrollbar hides */
 dialog.sheet {
   padding: 0; border: 0; margin: auto;
   width: min(1080px, calc(100% - 40px)); max-width: none;
@@ -522,9 +459,7 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
   .sheet-scroll { padding: 22px 16px calc(28px + env(safe-area-inset-bottom, 0px)); }
 }
 
-.sh-head { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(20px, 3vw, 36px); align-items: center; }
-.sh-head .thumb { border-radius: 16px; border: 1px solid var(--rule-2); }
-@media (max-width: 760px) { .sh-head { grid-template-columns: minmax(0, 1fr); } .sh-head .thumb { order: -1; } }
+.sh-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(18px, 2.4vw, 26px); align-items: start; }
 .meta { display: flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
 .sh-head h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); line-height: 1.04; letter-spacing: -0.032em; font-stretch: 88%; }
 .sum { margin-top: 14px; font-size: 1.06rem; line-height: 1.55; color: var(--ink-2); max-width: 62ch; }
@@ -554,13 +489,9 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
 #oh-svg text { font-family: var(--f-mono); }
 .oh-t { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; fill: var(--muted); }
 .oh-t.oh-head { fill: var(--head); }
-.oh-soft { opacity: .75; }
 .oh-edge { fill: none; stroke: var(--rule); stroke-width: 38; stroke-linejoin: round; stroke-linecap: butt; }
 .oh-road { fill: none; stroke: var(--ground-2); stroke-width: 34; stroke-linejoin: round; }
 .oh-hit { fill: none; stroke: transparent; stroke-width: 40; cursor: pointer; pointer-events: stroke; }
-.oh-cab { fill: var(--panel); stroke: var(--ink-2); stroke-width: 1.2; transition: stroke .2s; }
-.oh-cab.on { stroke: var(--glow); stroke-width: 2.5; }
-.oh-wire { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 2 4; }
 .oh-beam { stroke: var(--accent-line); stroke-width: 1.5; stroke-dasharray: 5 4; transition: stroke-width .2s; }
 .oh-post { fill: var(--panel); stroke: var(--ink-2); stroke-width: 1.2; }
 .oh-det.on .oh-beam { stroke: var(--glow); stroke-width: 3.5; stroke-dasharray: none; }
@@ -635,7 +566,6 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
   .hero-fig { aspect-ratio: 1 / .82; margin-top: 12px; }
   .fig-cap { font-size: .6rem; }
   .draft-toggle { right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); min-height: 32px; padding: 0 11px; font-size: .58rem; }
-  .sh-head .thumb { aspect-ratio: 16 / 9; }
   .sheet-bar { padding-left: 16px; }
   .sh-head h2 { font-size: 1.75rem; }
   .sum { font-size: 1rem; }
@@ -645,7 +575,6 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
 }
 
 .path .pk, .path .pv { display: block; }
-.app-top .an .as { margin-left: 6px; }
 @media (max-width: 600px) { .pl-scene svg { max-width: 210px; } }
 
 /* ---------- equal-size cards (same height in every group, at every width) ---------- */
@@ -676,7 +605,6 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
 .about-main { display: grid; gap: clamp(24px, 3vw, 32px); }
 .about-story { display: grid; gap: 12px; max-width: 62ch; }
 .about-story h3 { font-size: 1.35rem; letter-spacing: -0.02em; }
-.ph-tall { aspect-ratio: 4 / 5; }
 .about-rows { border-top: 1px solid var(--rule); }
 .about-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 6px 20px; padding: 16px 0; border-bottom: 1px solid var(--rule-2); }
 .col-h { margin: 3px 0 0; font-family: var(--f-mono); font-weight: 400; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
@@ -691,14 +619,12 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
 .reveal > p + p { margin-top: 10px; }
 @media (max-width: 820px) {
   .about-grid { grid-template-columns: minmax(0, 1fr); }
-  .ph-tall { aspect-ratio: 3 / 2; }
 }
 @media (max-width: 600px) {
   .about-row { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 14px 0; }
   .col-h { margin: 0; }
   .hero-fig { aspect-ratio: 1 / .78; margin: 6px 0 24px; }
   .fig-foot { bottom: -20px; }
-  .facts > div, .facts > div + div { padding: 12px 0; }
   .group-head h3 { font-size: 1.3rem; }
 }
 
@@ -762,7 +688,7 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
 .js-motion .story.enter .sh-text > :nth-child(2) { animation-delay: .05s; }
 .js-motion .story.enter .sh-text > :nth-child(3) { animation-delay: .1s; }
 .js-motion .story.enter .sh-text > :nth-child(4) { animation-delay: .15s; }
-.js-motion .story.enter .sh-head .thumb { animation-name: boardIn; animation-duration: 1.1s; animation-delay: .08s; }
+.js-motion .story.enter .sh-head .thumb { animation-name: fadeIn; animation-duration: .5s; animation-delay: 0s; }
 .js-motion .story.enter > .demo, .js-motion .story.enter > .prose { animation-delay: .2s; }
 .js-motion .story.enter > .more { animation-delay: .28s; }
 
@@ -875,7 +801,9 @@ dialog.sheet::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filt
   .menu-btn[aria-expanded="true"] span:first-child { transform: translateY(3.3px) rotate(45deg); }
   .menu-btn[aria-expanded="true"] span:last-child { transform: translateY(-3.3px) rotate(-45deg); }
 }
-@media (min-width: 901px) { .menu-panel { display: none !important; } }
+@media (min-width: 901px) { .menu-panel, .menu-scrim { display: none !important; } }
+.menu-scrim { position: fixed; inset: 0; z-index: 39; background: rgba(10, 18, 14, .22); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s; }
+.menu-scrim.show { opacity: 1; visibility: visible; transition: opacity .45s ease, visibility 0s; }
 @media (max-width: 900px) { main > section[id] { scroll-margin-top: 20px; } }
 
 /* ---------- aircraft demo: 20×4 character LCD, window ring, pick vs. inspect ---------- */
@@ -923,13 +851,10 @@ dialog.sheet { max-height: calc(100% - 28px); }
   .sheet-scroll { padding: clamp(20px, 2.8vw, 32px) clamp(20px, 3.4vw, 40px) clamp(24px, 3vw, 36px); }
 }
 @media (min-width: 761px) {
-  .sh-head { grid-template-columns: minmax(0, 1.45fr) minmax(0, .55fr); gap: clamp(18px, 2.6vw, 32px); }
   .sh-head h2 { font-size: clamp(1.7rem, 2.9vw, 2.25rem); }
   .sum { font-size: 1rem; }
 }
-/* phones: the demo is the picture, so demo stories skip the close-up render and open straight into it */
 @media (max-width: 760px) {
-  .story.has-demo .sh-head .thumb { display: none; }
   .sh-head h2 { font-size: 1.6rem; }
   .sum { font-size: .96rem; }
   .mini { margin-top: 12px; gap: 8px 22px; }
@@ -1029,7 +954,7 @@ dialog.rv::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filter:
 .rv-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: clamp(14px, 3vw, 32px); }
 .rv-page { display: block; width: 100%; max-width: 816px; height: auto; aspect-ratio: 1600 / 2071; margin: 0 auto; background: #fff; border-radius: 4px; box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 22px 44px -22px rgba(0, 0, 0, .4); }
 @media (max-width: 700px) {
-  dialog.rv { width: calc(100% - 20px); height: calc(100% - 34px); max-height: calc(100% - 34px); margin: auto 10px 10px; border-radius: 30px; }
+  dialog.rv { width: calc(100% - 20px); height: fit-content; max-height: calc(100% - 34px); margin: auto 10px 10px; border-radius: 30px; }   /* fits the page, no empty tail */
   .rv-bar { padding-left: 16px; }
   .rv-open, .rv-sub { display: none; }
   .rv-scroll { padding: 12px 12px calc(20px + env(safe-area-inset-bottom, 0px)); }
@@ -1039,6 +964,7 @@ dialog.rv::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filter:
    (its canvas is transparent). The camera fit still frames the whole board. */
 @media (min-width: 960px) {
   .hero-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 0; }
+  .h1-tag { font-size: min(4.9rem, 6.9vw); }   /* "To something real." always stays on one line beside the board */
   .hero-fig { --bleed: calc((var(--gutter) + max(0px, (100vw - var(--maxw)) / 2)) * .7); aspect-ratio: 1 / .9; margin-right: calc(var(--bleed) * -1); width: calc(100% + var(--bleed)); max-width: none; }
 }
 
@@ -1126,19 +1052,6 @@ dialog.rv::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filter:
 .balloon.tip-l:hover .tip, .balloon.tip-l:focus-visible .tip, .balloon.tip-l.hot .tip,
 .balloon.tip-r:hover .tip, .balloon.tip-r:focus-visible .tip, .balloon.tip-r.hot .tip { transform: translate(0, 0) scale(1); }
 
-/* ---------- plant: screenshots of the real app ---------- */
-.shots { margin-top: clamp(22px, 3vw, 30px); }
-.shots-h { font-size: 1.05rem; letter-spacing: -0.01em; font-stretch: 100%; margin-bottom: 12px; }
-.shots-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 2vw, 22px); max-width: 760px; }
-.shot { margin: 0; display: grid; gap: 8px; align-content: start; }
-.shot img { display: block; width: 100%; height: auto; border-radius: 18px; background: #0f1a14; border: 1px solid var(--rule); box-shadow: 0 18px 36px -22px rgba(0, 0, 0, .55); }
-.shot figcaption { font-size: .8rem; line-height: 1.35; color: var(--ink-2); }
-@media (max-width: 600px) {
-  .shots-row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; gap: 12px; margin-inline: -16px; padding: 2px 16px 8px; scrollbar-width: none; }
-  .shots-row::-webkit-scrollbar { display: none; }
-  .shot { flex: 0 0 64%; scroll-snap-align: start; }
-}
-.js-motion .story.enter > .shots { animation: rise .8s var(--ease) .24s both; }
 
 /* board labels: never on touch screens or narrow widths (a tap opens the project straight away),
    and the active number sits above its neighbours so its label is never covered */
@@ -1267,7 +1180,7 @@ html[data-input="pointer"] .pk-stall:focus-visible .pk-hit { stroke: transparent
 html[data-input="pointer"] .radar .ac:focus-visible:not(.sel) .selring { opacity: 0; }
 
 /* mono labels: one letter-spacing, two sizes */
-.eyebrow, .kicker, .label, .meta, .sheet-crumb, .col-h, .reveal summary, .tour-k, .so-k, .rv-sub, .tour-sub, .fig-cap { letter-spacing: var(--track); }
+.eyebrow, .label, .meta, .sheet-crumb, .col-h, .reveal summary, .tour-k, .so-k, .rv-sub, .tour-sub, .fig-cap { letter-spacing: var(--track); }
 .meta, .sheet-crumb, .col-h, .reveal summary { font-size: var(--mono-l); }
 .mini dt, .device-top, .card-meta, .so-k, .tip-k, .dh-k { letter-spacing: var(--track); }
 
@@ -1378,13 +1291,12 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
 .hint-glow .dh-t { animation: hintText 2.6s var(--ease-io) 1; }
 @keyframes hintText { 28%, 62% { color: var(--accent); } }
 
-/* ---------- board: opening callouts and the zoom into a landmark ---------- */
+/* ---------- board: the opening callouts ---------- */
 .balloons.intro .balloon { transition: none; }
 .balloons { transition: opacity .5s var(--ease) .15s; }
-.hero-fig.zooming .balloons { opacity: 0; transition: opacity .22s ease; }
+.hero-fig.zooming .balloons { opacity: 0; transition: opacity .18s ease; }
 .hero-fig.zooming .balloon { pointer-events: none; }
-.fig-cap { transition: opacity .5s var(--ease) .15s; }
-.hero-fig.zooming .fig-cap { opacity: 0; transition: opacity .22s ease; }
+.hero-fig.zooming .fig-cap { opacity: 0; transition: opacity .18s ease; }
 .hero-fig.zooming canvas {
   cursor: default;
   --fe: calc(var(--zf, 0) * 16%);
@@ -1400,10 +1312,80 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
 @media (max-width: 700px) {
   .story .demo { margin-inline: -16px; padding-inline: 16px; border-radius: 0; border-left: 0; border-right: 0; }
   .story .demo-hint { width: auto; max-width: none; margin: -4px -8px 10px; padding: 6px 8px; border-radius: 14px; }
-  .story .sh-head .thumb { width: calc(100% + 32px); max-width: none; margin: -22px -16px 0; border: 0; border-bottom: 1px solid var(--rule-2); border-radius: 0; }
-  .js-motion .story.enter .sh-head .thumb { animation-name: fadeIn; }
   dialog.sheet { max-height: calc(100% - 34px); }
 }
+
+/* ---------- panel picture: exactly the view the board's zoom lands on (same camera, lens and aspect ratio) ---------- */
+.sheet-scroll { --sp-t: clamp(22px, 4vw, 44px); --sp-x: clamp(22px, 4vw, 44px); }
+@media (min-width: 701px) { .sheet-scroll { --sp-t: clamp(20px, 2.8vw, 32px); --sp-x: clamp(20px, 3.4vw, 40px); } }
+@media (max-width: 700px) { .sheet-scroll { --sp-t: 22px; --sp-x: 16px; } }
+.sh-head .thumb.banner { aspect-ratio: var(--board-ar, 1.1); height: auto; max-width: none; }
+@media (min-width: 761px) {
+  /* the text sits centred beside the picture, so any difference in height reads as breathing room, not a gap */
+  .sh-head { grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); align-items: center; column-gap: clamp(24px, 3.2vw, 44px); }
+  .sh-head .thumb.banner { order: 2; width: 100%; margin: 0; border: 1px solid var(--rule-2); border-radius: 18px; }
+}
+@media (max-width: 760px) {
+  .sh-head .thumb.banner { width: calc(100% + 2 * var(--sp-x)); margin: calc(-1 * var(--sp-t)) calc(-1 * var(--sp-x)) 0; border: 0; border-bottom: 1px solid var(--rule-2); border-radius: 0; }
+}
+
+/* ---------- the view's handoff from the board to the panel ---------- */
+@property --ff { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+.flyshot {
+  position: fixed; inset: auto; left: 0; top: 0; width: 0; height: 0; margin: 0; padding: 0; border: 0;
+  overflow: hidden; background: transparent; pointer-events: none; color: inherit;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--ff), #000 calc(100% - var(--ff)), transparent), linear-gradient(to bottom, transparent, #000 var(--ff), #000 calc(100% - var(--ff)), transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 var(--ff), #000 calc(100% - var(--ff)), transparent), linear-gradient(to bottom, transparent, #000 var(--ff), #000 calc(100% - var(--ff)), transparent);
+  mask-composite: intersect;
+}
+.flyshot canvas { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sheet.morphing .sh-head .thumb.banner canvas { opacity: 0; }
+.sheet.morph .sh-head .thumb.banner { background: none; transition: border-color .3s var(--ease); }   /* nothing waits in the picture's place while it travels */
+.sheet.morphing .sh-head .thumb.banner { border-color: transparent; }
+.sheet.morph .story.enter .sh-head .thumb.banner { animation: none; }
+/* from the board the card fades in quickly around the travelling picture; the words rise in a beat later,
+   behind the picture as it lands, so the page and the card's text are never seen through each other */
+dialog.sheet.morph[open] { animation: sheetFade .24s ease both; }
+.js-motion .sheet.morph .story.enter .sh-text > * { animation-delay: .26s; }
+.js-motion .sheet.morph .story.enter .sh-text > :nth-child(2) { animation-delay: .31s; }
+.js-motion .sheet.morph .story.enter .sh-text > :nth-child(3) { animation-delay: .36s; }
+.js-motion .sheet.morph .story.enter .sh-text > :nth-child(4) { animation-delay: .41s; }
+.js-motion .sheet.morph .story.enter > .demo, .js-motion .sheet.morph .story.enter > .prose { animation-delay: .46s; }
+.js-motion .sheet.morph .story.enter > .more, .js-motion .sheet.morph .story.enter > .shots-open { animation-delay: .52s; }
+dialog.sheet.morph.closing { animation: sheetFadeOut .18s ease forwards; }
+/* the dimmed page behind the card fades too, instead of snapping back when the card closes */
+dialog.sheet[open]::backdrop { animation: backdropIn .3s ease both; }
+dialog.sheet.morph[open]::backdrop { animation: backdropIn .5s ease both; }
+dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards; }
+@keyframes backdropIn { from { opacity: 0; } }
+@keyframes backdropOut { to { opacity: 0; } }
+@keyframes sheetFade { from { opacity: 0; } }
+@keyframes sheetFadeOut { to { opacity: 0; } }
+
+/* ---------- featured: Alerts, Aircraft and Plant, each first in its own row ----------
+   Quiet on purpose: a copper hairline where other cards have a plain one, and a small frosted label on the picture
+   with a copper dot, in the same language as the number chip opposite it. No glow, no solid badge. */
+.group .card.feat, .card.feat { border-color: color-mix(in srgb, var(--accent-line) 62%, var(--rule)); }
+.group .card.feat:hover, .group .card.feat.hot, .card.feat:hover, .card.feat.hot { border-color: var(--accent-line); }
+.feat-tag {
+  position: absolute; right: 12px; top: 14px; z-index: 1;
+  display: inline-flex; align-items: center; gap: 6px; height: 22px; padding: 0 9px 0 8px; border-radius: 999px;
+  font-family: var(--f-mono); font-size: .56rem; font-weight: 400; letter-spacing: var(--track); text-transform: uppercase; line-height: 1;
+  color: var(--head); background: color-mix(in srgb, var(--panel) 82%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(1.3); backdrop-filter: blur(8px) saturate(1.3);
+  border: 1px solid color-mix(in srgb, var(--accent-line) 45%, transparent);
+}
+.feat-tag::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-line); }
+/* phones: the list cards are compact rows, so the label sits along the bottom of the picture instead */
+@media (max-width: 600px) { .feat-tag { top: auto; right: auto; left: 50%; bottom: 8px; translate: -50% 0; height: 19px; padding: 0 7px 0 6px; gap: 5px; font-size: .5rem; } }
+
+/* featured numbers on the board get a second ring, like a via */
+.balloon.feat { box-shadow: 0 0 0 3px var(--ground), 0 0 0 4.5px color-mix(in srgb, var(--accent-line) 80%, transparent); }
+
+/* ---------- the HNTB role line and the panel labels break between phrases, never mid-phrase ---------- */
+.role span, .meta .nw { white-space: nowrap; }
+@media (max-width: 760px) { .role .sep { display: none; } .role span { display: block; } }
 
 </style>
 </head>
@@ -1438,6 +1420,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </div>
   </div>
 </header>
+<div class="menu-scrim" id="menu-scrim" aria-hidden="true"></div>
 
 <main id="main">
 
@@ -1484,12 +1467,12 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     <div class="group">
       <div class="group-head" data-reveal>
         <h3>HNTB</h3>
-        <p>Intern Engineer, ITS &amp; Traffic · Parsippany, NJ · Summers 2025 and 2026</p>
+        <p class="role"><span>Intern Engineer, ITS &amp; Traffic</span><span class="sep" aria-hidden="true"> · </span><span>Parsippany, NJ · Summers 2025 and 2026</span></p>
         <p class="group-sub">Design, field verification and documentation for electrical, communications and control systems on transportation projects.</p>
       </div>
       <div class="cards">
-        <a class="card" data-reveal="card" href="#alerts" data-open="alerts">
-          <div class="thumb"><canvas data-thumb="alerts" aria-hidden="true"></canvas><span class="num">1</span></div>
+        <a class="card feat" data-reveal="card" href="#alerts" data-open="alerts">
+          <div class="thumb"><canvas data-thumb="alerts" aria-hidden="true"></canvas><span class="num">1</span><span class="feat-tag">Featured</span></div>
           <div class="card-body"><h4>Over-height vehicle alerts</h4><p>Tunnel over-height alerts on a phone in about two seconds, not just the booth panel.</p><span class="card-meta">Prototype <b class="demo-badge">Demo</b></span></div>
         </a>
         <a class="card" data-reveal="card" href="#troubleshooting" data-open="troubleshooting">
@@ -1513,12 +1496,12 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
         <p>Personal and team projects</p>
       </div>
       <div class="cards">
-        <a class="card" data-reveal="card" href="#aircraft" data-open="aircraft">
-          <div class="thumb"><canvas data-thumb="aircraft" aria-hidden="true"></canvas><span class="num">5</span></div>
+        <a class="card feat" data-reveal="card" href="#aircraft" data-open="aircraft">
+          <div class="thumb"><canvas data-thumb="aircraft" aria-hidden="true"></canvas><span class="num">5</span><span class="feat-tag">Featured</span></div>
           <div class="card-body"><h4>Aircraft approach display</h4><p>An ESP32 and an LCD that show which plane is on approach to Newark.</p><span class="card-meta">2026 <b class="demo-badge">Demo</b></span></div>
         </a>
-        <a class="card" data-reveal="card" href="#plant" data-open="plant">
-          <div class="thumb"><canvas data-thumb="plant" aria-hidden="true"></canvas><span class="num">6</span></div>
+        <a class="card feat" data-reveal="card" href="#plant" data-open="plant">
+          <div class="thumb"><canvas data-thumb="plant" aria-hidden="true"></canvas><span class="num">6</span><span class="feat-tag">Featured</span></div>
           <div class="card-body"><h4>Plant care platform</h4><p>One portable soil probe for many plants, a Flask app, and AI-assisted care guidance.</p><span class="card-meta">2026 <b class="demo-badge">Demo</b></span></div>
         </a>
         <a class="card" data-reveal="card" href="#smarthome" data-open="smarthome">
@@ -1527,7 +1510,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
         </a>
         <a class="card" data-reveal="card" href="#parking" data-open="parking">
           <div class="thumb"><canvas data-thumb="parking" aria-hidden="true"></canvas><span class="num">8</span></div>
-          <div class="card-body"><h4>Smart parking garage</h4><p>A class prototype that points drivers to the nearest open space and shows it live online.</p><span class="card-meta">2024 · Team project <b class="demo-badge">Demo</b></span></div>
+          <div class="card-body"><h4>Smart parking garage</h4><p>A class prototype that points drivers to the nearest open space and shows it live online.</p><span class="card-meta">2023 · Team project <b class="demo-badge">Demo</b></span></div>
         </a>
       </div>
     </div>
@@ -1617,15 +1600,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   <div class="sheet-scroll" id="sheet-scroll">
 
     <!-- 1 · ALERTS -->
-    <article class="story has-demo" id="alerts" data-story="alerts" data-title="Over-height vehicle alerts" hidden>
+    <article class="story has-demo" id="alerts" data-story="alerts" data-group="HNTB" data-title="Over-height vehicle alerts" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="alerts" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">1</span>HNTB · Prototype</p>
+          <p class="meta"><span class="num">1</span><span><span class="nw">HNTB</span> · <span class="nw">Prototype</span></span></p>
           <h2>Over-height vehicle alerts</h2>
           <p class="sum">Over-height detections at the Lincoln Tunnel show up on an indicator in the staffed control booth. I prototyped a mobile notification path so personnel could also get the alert away from the panel. An email-based option took about seven seconds; the MQTT path I built got the alert to a phone in about two.</p>
           <dl class="mini"><div><dt>My role</dt><dd>Built the prototype</dd></div><div><dt>Alert to phone</dt><dd>About 2 s (email: about 7 s)</dd></div><div><dt>Path</dt><dd>CBW relay controller, MQTT (HiveMQ), Node-RED on a Raspberry Pi, Pushover</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="alerts" aria-hidden="true"></canvas></div>
       </header>
 
       <div class="demo" id="oh">
@@ -1688,15 +1671,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </article>
 
     <!-- 2 · TROUBLESHOOTING -->
-    <article class="story" id="troubleshooting" data-story="troubleshooting" data-title="Detection troubleshooting" hidden>
+    <article class="story" id="troubleshooting" data-story="troubleshooting" data-group="HNTB" data-title="Detection troubleshooting" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="troubleshooting" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">2</span>HNTB · Field troubleshooting</p>
+          <p class="meta"><span class="num">2</span><span><span class="nw">HNTB</span> · <span class="nw">Field troubleshooting</span></span></p>
           <h2>Troubleshooting a three-zone over-height detection system</h2>
           <p class="sum">During a site visit to the Lincoln Tunnel, I supported troubleshooting of an over-height detection system with three advance detection zones. Alerts reached the control booth correctly, but some fault conditions did not. By the time we left the site, it was fixed.</p>
           <dl class="mini"><div><dt>My role</dt><dd>Supported field troubleshooting</dd></div><div><dt>Result</dt><dd>Resolved before we left the site</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="troubleshooting" aria-hidden="true"></canvas></div>
       </header>
       <div class="prose">
         <h3>The problem</h3>
@@ -1711,15 +1694,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </article>
 
     <!-- 3 · FIBER -->
-    <article class="story" id="fiber" data-story="fiber" data-title="Fiber and comms plans" hidden>
+    <article class="story" id="fiber" data-story="fiber" data-group="HNTB" data-title="Fiber and comms plans" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="fiber" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">3</span>HNTB · Design and documentation</p>
+          <p class="meta"><span class="num">3</span><span><span class="nw">HNTB</span> · <span class="nw">Design and documentation</span></span></p>
           <h2>Fiber plans and communications drawings</h2>
           <p class="sum">I developed temporary fiber-optic communications plans for the Newark Bay Bridge, laying out conduit routes and pull boxes and calculating quantities for more than 16,000 linear feet of conduit. I also produced MicroStation rack elevations and communications-hub diagrams.</p>
           <dl class="mini"><div><dt>Conduit quantified</dt><dd>16,000+ LF</dd></div><div><dt>Tools</dt><dd>MicroStation, OpenRoads Designer, Bluebeam Revu</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="fiber" aria-hidden="true"></canvas></div>
       </header>
       <div class="prose">
         <h3>Newark Bay Bridge</h3>
@@ -1730,15 +1713,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </article>
 
     <!-- 4 · STANDARDS -->
-    <article class="story has-demo" id="standards" data-story="standards" data-title="Standards retrieval" hidden>
+    <article class="story has-demo" id="standards" data-story="standards" data-group="HNTB" data-title="Standards retrieval" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="standards" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">4</span>HNTB · Proof of concept</p>
+          <p class="meta"><span class="num">4</span><span><span class="nw">HNTB</span> · <span class="nw">Proof of concept</span></span></p>
           <h2>Standards retrieval</h2>
           <p class="sum">I helped develop an AI-assisted retrieval proof of concept using structured indexes of engineering references with Microsoft Copilot and SharePoint. A plain-English question returns the standard drawings and specification sections that are likely relevant, along with related references.</p>
           <dl class="mini"><div><dt>Indexed</dt><dd>323 standard drawings, 126 spec sections</dd></div><div><dt>Built with</dt><dd>Microsoft Copilot, SharePoint</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="standards" aria-hidden="true"></canvas></div>
       </header>
       <div class="demo" id="sr">
         <p class="demo-hint"><span class="dh-dot" aria-hidden="true"></span><span class="dh-k">Try it</span><span class="dh-t">Pick a question to see what the index finds</span></p>
@@ -1777,15 +1760,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </article>
 
     <!-- 5 · AIRCRAFT -->
-    <article class="story has-demo" id="aircraft" data-story="aircraft" data-title="Aircraft approach display" hidden>
+    <article class="story has-demo" id="aircraft" data-story="aircraft" data-group="Projects" data-title="Aircraft approach display" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="aircraft" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">5</span>Personal project · Feb–Mar 2026</p>
+          <p class="meta"><span class="num">5</span><span><span class="nw">Personal project</span> · <span class="nw">Feb–Mar 2026</span></span></p>
           <h2>Aircraft approach display</h2>
           <p class="sum">A Python backend pulls live aircraft positions from the OpenSky Network and filters them for planes descending toward Newark Liberty (EWR) inside my viewing window. It adds aircraft and route details from adsbdb and FlightView, and formats four 20-character lines that an ESP32 shows on an LCD, in step with the planes I can see landing.</p>
           <dl class="mini"><div><dt>Built with</dt><dd>Python, ESP32, OpenSky Network, adsbdb</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="aircraft" aria-hidden="true"></canvas></div>
       </header>
       <div class="demo" id="plate-flight">
         <p class="demo-hint"><span class="dh-dot" aria-hidden="true"></span><span class="dh-k">Try it</span><span class="dh-t">Tap a plane to see how the filters treat it</span></p>
@@ -1835,15 +1818,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </article>
 
     <!-- 6 · PLANT -->
-    <article class="story has-demo" id="plant" data-story="plant" data-title="Plant care platform" hidden>
+    <article class="story has-demo" id="plant" data-story="plant" data-group="Projects" data-title="Plant care platform" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="plant" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">6</span>Personal project · Jan 2026 to present</p>
+          <p class="meta"><span class="num">6</span><span><span class="nw">Personal project</span> · <span class="nw">Jan 2026 to present</span></span></p>
           <h2>Plant care platform</h2>
           <p class="sum">A web platform that brings plant profiles, moisture readings, watering history and care guidance into one place. An ESP32 sensor device works with a Python/Flask backend and SQLite storage, and the web interface adds AI-assisted care guidance.</p>
           <dl class="mini"><div><dt>Built with</dt><dd>ESP32, Python, Flask, SQLite</dd></div><div><dt>Code</dt><dd><a class="ext" href="https://github.com/yannalam427/Plant-Chat" target="_blank" rel="noopener">GitHub · Plant-Chat ↗</a></dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="plant" aria-hidden="true"></canvas></div>
       </header>
       <div class="demo" id="plate-plant">
         <p class="demo-hint"><span class="dh-dot" aria-hidden="true"></span><span class="dh-k">Try it</span><span class="dh-t">Set the soil, request a reading, then apply it to a plant</span></p>
@@ -1932,28 +1915,28 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     </article>
 
     <!-- 7 · SMART HOME -->
-    <article class="story" id="smarthome" data-story="smarthome" data-title="Smart home IR bridge" hidden>
+    <article class="story" id="smarthome" data-story="smarthome" data-group="Projects" data-title="Smart home IR bridge" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="smarthome" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">7</span>Personal project · 2023</p>
+          <p class="meta"><span class="num">7</span><span><span class="nw">Personal project</span> · <span class="nw">2023</span></span></p>
           <h2>Smart home IR bridge</h2>
           <p class="sum">I developed an ESP32-based system that brought infrared-operated equipment, lighting and climate control, into Apple HomeKit. It handles IR command transmission, device-control logic and automation routines.</p>
           <dl class="mini"><div><dt>Built with</dt><dd>C++, ESP32, IR, Apple HomeKit</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="smarthome" aria-hidden="true"></canvas></div>
       </header>
     </article>
 
     <!-- 8 · SMART PARKING -->
-    <article class="story has-demo" id="parking" data-story="parking" data-title="Smart parking garage" hidden>
+    <article class="story has-demo" id="parking" data-story="parking" data-group="Projects" data-title="Smart parking garage" hidden>
       <header class="sh-head">
+        <div class="thumb banner"><canvas data-banner="parking" aria-hidden="true"></canvas></div>
         <div class="sh-text">
-          <p class="meta"><span class="num">8</span>Team project · FED 101, NJIT · 2024</p>
+          <p class="meta"><span class="num">8</span><span><span class="nw">Team project</span> · <span class="nw">FED 101, NJIT</span> · <span class="nw">2023</span></span></p>
           <h2>Smart parking garage occupancy system</h2>
           <p class="sum">A team proof of concept for NJIT’s Fundamentals of Engineering Design course, aimed at how hard it is for commuters to find parking. The system detected open spaces, used a screen to point drivers to the nearest one, and updated a website with live availability as conditions changed.</p>
           <dl class="mini"><div><dt>Built with</dt><dd>Arduino Uno, sensors, LCD, status lights, Wi-Fi module, website</dd></div><div><dt>My role</dt><dd>Hardware and software for the individual space sensors</dd></div></dl>
         </div>
-        <div class="thumb"><canvas data-thumb="parking" aria-hidden="true"></canvas></div>
       </header>
 
       <div class="demo" id="pk">
@@ -2079,8 +2062,6 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   var PORTAL = { x: 0, z: -5.38, w: 1.5, d: 0.76, h: 0.56 };
   var CAB = { x: 0.7, z: -3.85 };
   var HOUSE = { x: -4.42, z: -1.5 };
-  // three separate approaches into the portal, one detector zone each
-  var APPROACH = [[[-2.2, -3], [-0.3, -4.9]], [[0, -3], [0, -4.95]], [[2.2, -3], [0.3, -4.9]]];
 
   var streets = [
     [[-EDGE, -3], [-3, -3], [-2.2, -3], [0, -3], [2.2, -3], [3, -3], [EDGE, -3]],
@@ -2316,13 +2297,55 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   core.position.y = -T * 0.52;
   world.add(core);
 
-  var catcher = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.ShadowMaterial({ opacity: 0.16 }));
+  /* the ground under the board only catches shadows right at the board's edge (its own drop shadow) and fades out
+     beyond it, so nothing flying off the board, like the plane on its approach, casts a shadow onto the page. It turns
+     with the board, so the fade always follows the board's edges. */
+  var catcherMat = new THREE.ShadowMaterial({ opacity: 0.16 });
+  catcherMat.onBeforeCompile = function (sh) {
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec2 vGp;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvGp = position.xy;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', '#include <common>\nvarying vec2 vGp;')
+      .replace('gl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) );',
+        'gl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) * ( 1.0 - smoothstep( 6.12, 6.7, max( abs( vGp.x ), abs( vGp.y ) ) ) ) );');
+  };
+  var catcher = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), catcherMat);
   catcher.rotation.x = -Math.PI / 2; catcher.position.y = -T - 0.02; catcher.receiveShadow = true;
-  scene.add(catcher);
+  world.add(catcher);
 
   // buildings (one instanced mesh)
   var bGeo = new THREE.BoxGeometry(1, 1, 1); bGeo.translate(0, 0.5, 0);
   var bMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.86, metalness: 0 });
+  /* Windows, drawn in the shader: each facade gets a neat grid centred on it, a few of them lit warm. The grid fades out
+     wherever a window would be smaller than a few pixels, so the full board stays as clean as before and the windows
+     only show as the camera gets close (the zoom, the card pictures and the panel banners). */
+  bMat.extensions = { derivatives: true };
+  bMat.onBeforeCompile = function (sh) {
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vBP; varying vec3 vON; varying vec3 vSz; varying vec2 vC;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\n#ifdef USE_INSTANCING\n  vBP = (instanceMatrix * vec4(transformed, 1.0)).xyz; vON = normal;\n  vSz = vec3(instanceMatrix[0][0], instanceMatrix[1][1], instanceMatrix[2][2]); vC = instanceMatrix[3].xz;\n#endif');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vBP; varying vec3 vON; varying vec3 vSz; varying vec2 vC;\nfloat winHash(vec2 p) { p = fract(p * vec2(0.1031, 0.1030)); p += dot(p, p.yx + 33.33); return fract((p.x + p.y) * p.x); }')
+      .replace('#include <emissivemap_fragment>', [
+        '#include <emissivemap_fragment>',
+        'if (abs(vON.y) < 0.5 && vSz.y > 0.3) {',
+        '  bool alongX = abs(vON.z) > 0.5;                       // facade faces +-z, so it runs along x',
+        '  float width = alongX ? vSz.x : vSz.z, u = (alongX ? vBP.x - vC.x : vBP.z - vC.y) + 0.5 * width;',
+        '  vec2 cell = vec2(0.085, 0.105);',
+        '  float nCols = max(1.0, floor((width - 0.06) / cell.x)), nRows = floor((vSz.y - 0.17) / cell.y);',
+        '  vec2 g = vec2((u - 0.5 * (width - nCols * cell.x)) / cell.x, (vBP.y - 0.11) / cell.y);',
+        '  vec2 id = floor(g), f = fract(g), fw = max(fwidth(g), vec2(1e-4));',
+        '  float lod = 1.0 - smoothstep(0.34, 0.7, max(fw.x, fw.y));   // crisp down to ~3 px cells, then an even tint',
+        '  vec2 w2 = smoothstep(vec2(0.27, 0.22) - fw, vec2(0.27, 0.22) + fw, f) * (1.0 - smoothstep(vec2(0.73, 0.74) - fw, vec2(0.73, 0.74) + fw, f));',
+        '  float inGrid = step(0.0, id.x) * step(id.x, nCols - 1.0) * step(0.0, id.y) * step(id.y, nRows - 1.0);',
+        '  float win = mix(0.24, w2.x * w2.y, lod) * inGrid;           // 0.24 = a window\'s share of its cell, so the tone never drops out',
+        '  // snap every input to whole numbers first, so tiny interpolation errors can never flicker a window on or off',
+        '  float r = winHash(id + floor(vC * 8.0 + 0.5) * vec2(0.71, 0.37) + floor(vON.xz + 0.5) * 3.0);',
+        '  float lit = step(0.83, r);',
+        '  diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(0.6, 0.66, 0.7), win * (1.0 - lit));',
+        '  totalEmissiveRadiance += vec3(1.0, 0.74, 0.46) * (0.45 + 0.25 * r) * win * lit;',
+        '}'
+      ].join('\n'));
+  };
   var inst = new THREE.InstancedMesh(bGeo, bMat, lots.length);
   inst.castShadow = true; inst.receiveShadow = true;
   var m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v3 = new THREE.Vector3(), s3 = new THREE.Vector3();
@@ -2573,20 +2596,48 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
         led.position.set(x, ly, G.z + G.d / 2 + 0.02); world.add(led);
         var glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: ON, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.9 }));
         glow.scale.set(0.2, 0.2, 1); glow.position.copy(led.position); world.add(glow);
-        stalls.push({ car: car, led: led, glow: glow, occ: true });
+        // lower-level cars leave out the open front onto the street; upper-deck cars stop short of the parapet
+        stalls.push({ car: car, led: led, glow: glow, occ: true, z0: G.z - 0.02, zOut: level ? G.z + 0.4 : G.z + G.d / 2 + 0.36, anim: null });
       }
     });
-    function setStall(st, occ) { st.occ = occ; st.car.visible = occ; var c = occ ? ON : OFF; st.led.material.color.copy(c); st.glow.material.color.copy(c); }
+    function setLight(st, occ) { var c = occ ? ON : OFF; st.led.material.color.copy(c); st.glow.material.color.copy(c); }
+    function setStall(st, occ) { st.occ = occ; st.car.visible = occ; st.car.position.z = st.z0; setLight(st, occ); }
     [1, 0, 1, 1, 0, 1, 1, 0].forEach(function (o, i) { setStall(stalls[i], !!o); });
-    stalls.set = setStall;
+    stalls.set = setStall; stalls.light = setLight;
   })();
-  var stallClock = 0;
+  /* Cars drive, they don't blink: a leaving car backs out of its stall and fades as it goes, an arriving car fades in
+     and pulls in. The stall's light follows the sensor: it goes green once the car has left the space and red once
+     one has pulled in. One car at a time, every 4 to 7 seconds. */
+  var stallClock = 0, nextMove = 4 + rnd() * 3;
+  function carOpacity(car, o) {
+    car.traverse(function (m) { if (m.material) { m.material.transparent = o < 1; m.material.opacity = o; m.castShadow = o > 0.5; } });
+  }
   function garageTick(dt) {
+    var moving = false;
+    stalls.forEach(function (st) {
+      var a = st.anim; if (!a) return;
+      moving = true;
+      a.t += dt; var p = Math.min(1, a.t / a.dur);
+      if (a.enter) {
+        var e = 1 - Math.pow(1 - p, 3);                                   // ease out: rolls in and settles
+        st.car.position.z = st.zOut + (st.z0 - st.zOut) * e;
+        carOpacity(st.car, Math.min(1, p / 0.3));
+        if (p > 0.85) stalls.light(st, true);
+      } else {
+        var e2 = p * p * (3 - 2 * p);                                     // gentle start and finish
+        st.car.position.z = st.z0 + (st.zOut - st.z0) * e2;
+        carOpacity(st.car, p < 0.6 ? 1 : 1 - (p - 0.6) / 0.4);
+        if (p > 0.3) stalls.light(st, false);
+      }
+      if (p >= 1) { st.anim = null; if (!a.enter) st.car.visible = false; carOpacity(st.car, 1); }
+    });
     stallClock += dt;
-    if (stallClock < 2.6) return;
-    stallClock = 0;
+    if (moving || stallClock < nextMove) return;
+    stallClock = 0; nextMove = 4 + rnd() * 3;
     var st = stalls[Math.floor(rnd() * stalls.length)];
-    stalls.set(st, !st.occ);
+    st.occ = !st.occ;
+    st.anim = { t: 0, dur: st.occ ? 1.7 : 1.9, enter: st.occ };
+    if (st.occ) { st.car.position.z = st.zOut; carOpacity(st.car, 0); st.car.visible = true; }
   }
 
   // ripples on tap / click
@@ -2605,6 +2656,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
     renderer.setSize(W, H, false);
     camera.aspect = W / H;
+    document.documentElement.style.setProperty('--board-ar', (W / H).toFixed(4));
     var halfV = THREE.MathUtils.degToRad(FOV0 / 2);
     var halfH = Math.atan(Math.tan(halfV) * camera.aspect);
     baseR = Math.max(8.6 / Math.tan(halfH), 6.6 / Math.tan(halfV));
@@ -2665,15 +2717,18 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   fig.addEventListener('pointerleave', function () { inside = false; holdTilt = false; steer.last = clock - 2; if (!zoom) { tilt.tx = 0; tilt.ty = 0; } });
 
   /* ---------------- balloons: every story has a spot on the board ---------------- */
+  /* view: each landmark's close-up (target, azimuth and elevation in degrees, distance for a 30° lens). The angles stay
+     within about 30° of the board's own viewing angle, so the dive onto them never has to swing around the board.
+     Every dive path keeps at least 1 unit from every building (checked at both page positions and screen sizes). */
   var STORIES = [
-    { id: 'alerts', n: 1, title: 'Over-height vehicle alerts', p: [0, 0.42, -5.1], off: [38, -54], view: { t: [0, 0.12, -4.35], az: 30, el: 52, d: 4.3 } },
-    { id: 'troubleshooting', n: 2, title: 'Detection troubleshooting', p: [CAB.x, 0.36, CAB.z], off: [72, 8], view: { t: [CAB.x - 0.2, 0.16, CAB.z - 0.2], az: 58, el: 30, d: 2.7 } },
-    { id: 'fiber', n: 3, title: 'Fiber and comms plans', p: [3, 0.62, 3.95], off: [-30, 62], view: { t: [3, 0.3, 3.95], az: 96, el: 20, d: 4.0 } },
-    { id: 'standards', n: 4, title: 'Standards retrieval', p: [CHIP.x, 0.28, CHIP.z], off: [60, 50], view: { t: [CHIP.x, 0.1, CHIP.z], az: 28, el: 40, d: 4.2 } },
-    { id: 'aircraft', n: 5, title: 'Aircraft approach display', p: [-2.6, 0.04, RWY.z], off: [-50, 56], view: { t: [-3.4, 0.4, RWY.z], az: 10, el: 18, d: 5.6 } },
-    { id: 'plant', n: 6, title: 'Plant care platform', p: [PLANT.x, 0.62, PLANT.z], off: [-64, -14], view: { t: [PLANT.x, 0.34, PLANT.z], az: 48, el: 24, d: 2.3 } },
-    { id: 'smarthome', n: 7, title: 'Smart home IR bridge', p: [HOUSE.x, 0.62, HOUSE.z], off: [-26, -60], view: { t: [HOUSE.x, 0.24, HOUSE.z], az: 36, el: 26, d: 2.6 } },
-    { id: 'parking', n: 8, title: 'Smart parking garage', p: [GARAGE.x, 0.52, GARAGE.z], off: [34, -58], view: { t: [GARAGE.x, 0.2, GARAGE.z + 0.1], az: 18, el: 17, d: 2.35 } }
+    { id: 'alerts', n: 1, feat: true, kind: 'HNTB', title: 'Over-height vehicle alerts', p: [0, 0.42, -5.1], off: [38, -54], view: { t: [0, 0.12, -4.35], az: 30, el: 52, d: 4.3 } },
+    { id: 'troubleshooting', n: 2, kind: 'HNTB', title: 'Detection troubleshooting', p: [CAB.x, 0.36, CAB.z], off: [72, 8], view: { t: [CAB.x - 0.2, 0.16, CAB.z - 0.2], az: 70, el: 50, d: 2.8 } },
+    { id: 'fiber', n: 3, kind: 'HNTB', title: 'Fiber and comms plans', p: [3, 0.62, 3.95], off: [-30, 62], view: { t: [3, 0.3, 3.95], az: 72, el: 26, d: 4.0 } },
+    { id: 'standards', n: 4, kind: 'HNTB', title: 'Standards retrieval', p: [CHIP.x, 0.28, CHIP.z], off: [60, 50], view: { t: [CHIP.x, 0.1, CHIP.z], az: 28, el: 40, d: 4.2 } },
+    { id: 'aircraft', n: 5, feat: true, kind: 'Project', title: 'Aircraft approach display', p: [-2.6, 0.04, RWY.z], off: [-50, 56], view: { t: [-3.4, 0.4, RWY.z], az: 28, el: 24, d: 5.6 } },
+    { id: 'plant', n: 6, feat: true, kind: 'Project', title: 'Plant care platform', p: [PLANT.x, 0.62, PLANT.z], off: [-64, -14], view: { t: [PLANT.x, 0.34, PLANT.z], az: 48, el: 27, d: 2.3 } },
+    { id: 'smarthome', n: 7, kind: 'Project', title: 'Smart home IR bridge', p: [HOUSE.x, 0.62, HOUSE.z], off: [-26, -60], view: { t: [HOUSE.x, 0.24, HOUSE.z], az: 36, el: 27, d: 2.6 } },
+    { id: 'parking', n: 8, kind: 'Team project', title: 'Smart parking garage', p: [GARAGE.x, 0.52, GARAGE.z], off: [34, -58], view: { t: [GARAGE.x, 0.2, GARAGE.z + 0.1], az: 30, el: 22, d: 2.35 } }
   ];
   var NS = 'http://www.w3.org/2000/svg';
   var bBox = document.getElementById('balloons'), lineG = document.getElementById('balloon-lines');
@@ -2681,11 +2736,11 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   STORIES.forEach(function (s) {
     s.v = new THREE.Vector3(s.p[0], s.p[1], s.p[2]);
     var b = document.createElement('button');
-    b.type = 'button'; b.className = 'balloon'; b.textContent = s.n;
+    b.type = 'button'; b.className = 'balloon' + (s.feat ? ' feat' : ''); b.textContent = s.n;
     b.setAttribute('aria-label', s.n + ': ' + s.title);
     // hover label, styled like a drawing callout: index and kind in mono, then the title
     var tip = document.createElement('span'); tip.className = 'tip'; tip.setAttribute('aria-hidden', 'true');
-    var kind = s.n <= 4 ? 'HNTB' : (s.id === 'parking' ? 'Team project' : 'Project');
+    var kind = s.kind;
     var demo = ['alerts', 'standards', 'aircraft', 'plant', 'parking'].indexOf(s.id) >= 0;
     var tk = document.createElement('span'); tk.className = 'tip-k'; tk.textContent = ('0' + s.n).slice(-2) + ' · ' + kind + (demo ? ' · Demo' : '');
     var tt = document.createElement('span'); tt.className = 'tip-t'; tt.textContent = s.title;
@@ -2694,7 +2749,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     b.addEventListener('click', function () { zoomTo(s); });
     b.addEventListener('mouseenter', function () { holdTilt = true; setHot(s.id, true); });
     b.addEventListener('mouseleave', function () { holdTilt = false; setHot(null, true); });
-    b.addEventListener('focus', function () { setHot(s.id, true); });
+    b.addEventListener('focus', function () { if (document.documentElement.getAttribute('data-input') === 'key') setHot(s.id, true); });
     b.addEventListener('blur', function () { setHot(null, true); });
     bBox.appendChild(b); s.el = b;
     s.line = document.createElementNS(NS, 'line'); lineG.appendChild(s.line);
@@ -2743,50 +2798,74 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     }
   }
 
-  /* ---------------- zoom: pressing a number flies the camera to that landmark, then the card rises ----------------
-     The close-up is the same framing as the card's own render (s.view), so the card opens on what you just flew to.
-     Distance is blended on a log scale, so the zoom feels even rather than rushing at the end. */
+  /* ---------------- zoom: pressing a number dives the camera onto that landmark while the view travels into the card ----------------
+     The close-up is the same framing as the card's own render (closeUp(s)), so the card opens on what you just dove to.
+     The whole board view and every close-up use one lens (FOV0), so nothing "breathes" on the way in. s.view.d is given
+     for a 30° lens; LENS converts it so the framing is unchanged. */
   var zoom = null, fly = null, zoomTimer = 0;
-  function ease(x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  function ease(x) { return 0.5 - 0.5 * Math.cos(Math.PI * x); }   // sine in-out: a soft start and landing, no rush in the middle
+  var LENS = Math.tan(THREE.MathUtils.degToRad(15)) / Math.tan(THREE.MathUtils.degToRad(FOV0 / 2));
+  function closeUp(s) {   // the landmark and the close-up camera position, in board units
+    var v = s.view, az = v.az * Math.PI / 180, el = v.el * Math.PI / 180, d = v.d * LENS;
+    var t = new THREE.Vector3(v.t[0], v.t[1], v.t[2]);
+    return { t: t, cp: new THREE.Vector3(t.x + Math.sin(az) * Math.cos(el) * d, t.y + Math.sin(el) * d, t.z + Math.cos(az) * Math.cos(el) * d) };
+  }
   function zoomTo(s) {
-    var open = function () { if (window.YVA && window.YVA.open) window.YVA.open(s.id); };
-    if (reduce || zoom) { if (!zoom) open(); return; }
+    if (reduce || zoom) { if (!zoom && window.YVA && window.YVA.open) window.YVA.open(s.id); return; }
     // hold the board where it is: no more tilt from the pointer until the camera is back
     tilt.tx = tilt.x; tilt.ty = tilt.y; tilt.vx = 0; tilt.vy = 0;
     setHot(null, true);
     world.updateMatrixWorld();
-    var v = s.view, az = v.az * Math.PI / 180, el = v.el * Math.PI / 180;
-    var t = new THREE.Vector3(v.t[0], v.t[1], v.t[2]);
-    var cp = new THREE.Vector3(t.x + Math.sin(az) * Math.cos(el) * v.d, t.y + Math.sin(el) * v.d, t.z + Math.cos(az) * Math.cos(el) * v.d);
-    t.applyMatrix4(world.matrixWorld); cp.applyMatrix4(world.matrixWorld);
-    zoom = { s: s, pos: cp, target: t, rot: world.rotation.y, k: 0 };
-    fly = { t0: performance.now(), dur: 950, dir: 1 };
+    var c = closeUp(s);
+    c.t.applyMatrix4(world.matrixWorld); c.cp.applyMatrix4(world.matrixWorld);
+    var dv = c.cp.clone().sub(c.t), dist = dv.length();
+    zoom = { s: s, target: c.t, az: Math.atan2(dv.x, dv.z), el: Math.asin(dv.y / dist), dist: dist, rot: world.rotation.y, k: 0 };
+    fly = { t0: performance.now(), dur: ZOOM_IN, dir: 1 };
     fig.classList.add('zooming');
-    clearTimeout(zoomTimer); zoomTimer = setTimeout(open, 720);   // the card rises as the camera arrives
+    // one motion: from the first frame, the live view travels into the card while the camera zooms, and both land together
+    flight = window.YVA && window.YVA.openFromBoard ? window.YVA.openFromBoard(s.id, canvas, ZOOM_IN) : null;
+    if (flight) showBoard(false, 220);   // the frame covers the board inside the card; outside it, the board dims away with the page
+    else { clearTimeout(zoomTimer); zoomTimer = setTimeout(function () { if (window.YVA) window.YVA.open(s.id); }, ZOOM_IN - 90); }
     if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
   }
-  document.addEventListener('sheet:close', function () {
-    if (zoom && (!fly || fly.dir > 0)) { fly = { t0: performance.now(), dur: 900, dir: -1, from: zoom.k || 1 }; }
+  // closing: the camera starts pulling back out the moment the card starts to dissolve (fast away, gentle landing)
+  document.addEventListener('sheet:closing', function () {
+    if (!zoom || (fly && fly.dir < 0)) return;
+    clearTimeout(zoomTimer);
+    fly = { t0: performance.now(), dur: ZOOM_OUT, dir: -1, from: zoom.k || 1 };
+    // the card's picture travels back onto the board while the camera pulls out; the same motion in reverse
+    flight = window.YVA && window.YVA.flyBack ? window.YVA.flyBack(canvas, ZOOM_OUT) : null;
+    showBoard(!flight);
+    paused = false; cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame);
   });
-  var restPos = new THREE.Vector3(), restTgt = new THREE.Vector3(), dA = new THREE.Vector3(), dB = new THREE.Vector3();
+  var flight = null, endFlightAfterRender = null, ZOOM_IN = 700, ZOOM_OUT = 640;
+  function showBoard(on, fadeMs) {
+    canvas.style.transition = fadeMs ? 'opacity ' + fadeMs + 'ms ease 60ms' : 'none';
+    canvas.style.opacity = on ? '' : '0';
+  }
+  var restPos = new THREE.Vector3(), restTgt = new THREE.Vector3(), dA = new THREE.Vector3(), aim = new THREE.Vector3();
   var lastZf = '';
 
   var thumbsDone = false;
   function thumbsOnce() {
     if (thumbsDone) return; thumbsDone = true;
     var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 200); };
-    setTimeout(function () { idle(function () { try { renderThumbs(); } catch (e) {} }); }, 300);
+    // with a deadline: on a busy device the browser may never report being idle while the board animates
+    setTimeout(function () { idle(function () { try { renderThumbs(); } catch (e) {} }, { timeout: 2000 }); }, 300);
   }
   /* ---------------- close-up renders of each spot, used on the cards ---------------- */
   function renderThumbs() {
     if (!document.querySelector('canvas[data-thumb]')) return;
     var TW = small ? 640 : 960, TH = Math.round(TW * 10 / 16), tr;
+    // the panel picture is exactly what the board's zoom lands on: the board's own aspect ratio (W:H), at up to 2x its size
+    var bdpr = Math.min(window.devicePixelRatio || 1, 2);
+    var BW = Math.round(Math.min(1400, W * bdpr)), BH = Math.round(BW * H / W);
     try { tr = new THREE.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { return; }
     if (!tr.getContext()) return;
     tr.setPixelRatio(1); tr.setSize(TW, TH, false);
     tr.outputEncoding = THREE.sRGBEncoding; tr.shadowMap.enabled = true; tr.shadowMap.type = THREE.PCFSoftShadowMap;
     tr.setClearColor(0x000000, 0);
-    var tc = new THREE.PerspectiveCamera(30, TW / TH, 0.1, 100);
+    var tc = new THREE.PerspectiveCamera(FOV0, TW / TH, 0.1, 100);
     var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 60); };
     var i = 0;
     function one() {
@@ -2796,16 +2875,23 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
       world.rotation.y = -Math.PI / 4; probe.intensity = 0;
       placePlane(s.id === 'aircraft' ? 8.7 : planeT);
       world.updateMatrixWorld(true);
-      var v = s.view, az = v.az * Math.PI / 180, el = v.el * Math.PI / 180;
-      var t = new THREE.Vector3(v.t[0], v.t[1], v.t[2]);
-      var cp = new THREE.Vector3(t.x + Math.sin(az) * Math.cos(el) * v.d, t.y + Math.sin(el) * v.d, t.z + Math.cos(az) * Math.cos(el) * v.d);
-      t.applyMatrix4(world.matrixWorld); cp.applyMatrix4(world.matrixWorld);
-      tc.position.copy(cp); tc.lookAt(t);
+      var c = closeUp(s);
+      c.t.applyMatrix4(world.matrixWorld); c.cp.applyMatrix4(world.matrixWorld);
+      tc.position.copy(c.cp); tc.lookAt(c.t);
+      tr.setSize(TW, TH, false); tc.aspect = TW / TH; tc.updateProjectionMatrix();
       tr.render(scene, tc);
       document.querySelectorAll('canvas[data-thumb="' + s.id + '"]').forEach(function (c) {
         c.width = TW; c.height = TH;
         var g = c.getContext('2d'); g.clearRect(0, 0, TW, TH); g.drawImage(tr.domElement, 0, 0);
       });
+      // the panel picture: same camera and vertical lens as the card and as the board's zoom, framed like the board
+      var bn = document.querySelector('canvas[data-banner="' + s.id + '"]');
+      if (bn) {
+        tr.setSize(BW, BH, false); tc.aspect = BW / BH; tc.updateProjectionMatrix();
+        tr.render(scene, tc);
+        bn.width = BW; bn.height = BH;
+        var bg = bn.getContext('2d'); bg.clearRect(0, 0, BW, BH); bg.drawImage(tr.domElement, 0, 0);
+      }
       world.rotation.y = saveRot; probe.intensity = saveProbe; placePlane(planeT); world.updateMatrixWorld(true);
       idle(function () { try { one(); } catch (e) {} }, { timeout: 400 });
     }
@@ -2814,7 +2900,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
 
   /* ---------------- loop ---------------- */
   var dirty = true, visible = true, paused = false, last = performance.now(), planeT = 6.5;
-  document.addEventListener('sheet:open', function () { paused = true; });
+  document.addEventListener('sheet:open', function () { paused = true; setHot(null, true); });
   document.addEventListener('sheet:close', function () { paused = false; cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame); });
   function frame(now) {
     var dt = Math.min(0.05, (now - last) / 1000); last = now;
@@ -2861,26 +2947,31 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     var zk = 0;
     if (zoom) {
       var fp = fly ? Math.min(1, (now - fly.t0) / fly.dur) : 1;
-      zoom.k = fly ? (fly.dir > 0 ? ease(fp) : fly.from * (1 - ease(fp))) : 1;
+      zoom.k = fly ? (fly.dir > 0 ? ease(fp) : fly.from * Math.pow(1 - fp, 3)) : 1;   // in: ease in-out; out: fast away, gentle landing
       zk = zoom.k;
       rot += (zoom.rot - rot) * zk;
+      if (fly && fly.dir < 0 && fp > 0.55 && !flight) fig.classList.remove('zooming');   // the numbers come back as the board settles
       if (fly && fp >= 1) {
-        if (fly.dir < 0) { zoom = null; fig.classList.remove('zooming'); }
+        var landedIn = fly.dir > 0;
+        if (!landedIn) { zoom = null; fig.classList.remove('zooming'); }
         fly = null;
+        endFlightAfterRender = landedIn ? 'in' : 'out';
       }
     }
     if (zk > 0 && zoom) {
-      // aim point slides to the landmark; direction turns toward the close-up angle; distance shrinks on a log scale
-      var tgt = restTgt.clone().lerp(zoom.target, zk);
-      dA.copy(restPos).sub(restTgt); var dist0 = dA.length(); dA.normalize();
-      dB.copy(zoom.pos).sub(zoom.target); var dist1 = dB.length(); dB.normalize();
-      dA.lerp(dB, zk).normalize();
-      camera.position.copy(tgt).addScaledVector(dA, dist0 * Math.pow(dist1 / dist0, zk));
-      camera.lookAt(tgt);
-      camera.fov = FOV0 + (30 - FOV0) * zk; camera.updateProjectionMatrix();
+      /* one smooth dive along a single arc: heading (azimuth), pitch (elevation) and distance (on a log scale) all follow
+         the same eased progress, so nothing turns or tilts in a burst. The aim point closes in faster than the distance
+         shrinks (remaining offset = distance share x (1 - k)), so the landmark glides steadily to the centre of the frame
+         instead of drifting outward and being swung back in at the end. No roll, no lens change. */
+      dA.copy(restPos).sub(restTgt); var dist0 = dA.length();
+      var az0 = Math.atan2(dA.x, dA.z), el0 = Math.asin(dA.y / dist0);
+      var dAz = zoom.az - az0; dAz = Math.atan2(Math.sin(dAz), Math.cos(dAz));   // the short way round
+      var dd = dist0 * Math.pow(zoom.dist / dist0, zk), ca = az0 + dAz * zk, ce = el0 + (zoom.el - el0) * zk;
+      aim.copy(restTgt).sub(zoom.target).multiplyScalar((dd / dist0) * (1 - zk)).add(zoom.target);
+      camera.position.set(aim.x + Math.sin(ca) * Math.cos(ce) * dd, aim.y + Math.sin(ce) * dd, aim.z + Math.cos(ca) * Math.cos(ce) * dd);
+      camera.lookAt(aim);
     } else {
       camera.position.copy(restPos); camera.lookAt(restTgt);
-      if (camera.fov !== FOV0) { camera.fov = FOV0; camera.updateProjectionMatrix(); }
     }
     world.rotation.y = rot;
     world.updateMatrixWorld();
@@ -2888,6 +2979,20 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     var zf = zk.toFixed(3); if (zf !== lastZf) { canvas.style.setProperty('--zf', zf); lastZf = zf; }
 
     renderer.render(scene, camera);
+    if (flight) {
+      // the travelling view shows this exact frame (a WebGL canvas is readable right after it renders)
+      var fg = flight.getContext('2d');
+      fg.clearRect(0, 0, flight.width, flight.height);
+      try { fg.drawImage(canvas, 0, 0, flight.width, flight.height); } catch (e) {}
+    }
+    if (endFlightAfterRender) {
+      var how = endFlightAfterRender; endFlightAfterRender = null;
+      if (flight) {
+        flight = null;
+        if (how === 'in') { if (window.YVA.landed) window.YVA.landed(); }          // the travelling view becomes the card's picture
+        else { showBoard(true); if (window.YVA.backDone) window.YVA.backDone(); }   // and here, the board again
+      } else if (how === 'out') showBoard(true);
+    }
     updateBalloons();
     dirty = false;
     if (visible && (!paused || fly) && !reduce) raf = requestAnimationFrame(frame); else raf = 0;
@@ -2953,11 +3058,12 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
 
   /* ---------------- mobile menu ---------------- */
   (function menu() {
-    var btn = $('#menu-btn'), panel = $('#menu-panel'); if (!btn || !panel) return;
+    var btn = $('#menu-btn'), panel = $('#menu-panel'), scrim = $('#menu-scrim'); if (!btn || !panel) return;
     var isOpen = false;
     function set(open) {
       isOpen = open;
       panel.classList.toggle('open', open);
+      if (scrim) scrim.classList.toggle('show', open);   // the page behind dims a little, so the menu reads as a layer
       panel.setAttribute('aria-hidden', String(!open));
       if (open) panel.removeAttribute('inert'); else panel.setAttribute('inert', '');
       btn.setAttribute('aria-expanded', String(open));
@@ -2970,6 +3076,15 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     window.addEventListener('scroll', function () { if (isOpen && Math.abs(window.scrollY - openY) > 60) set(false); }, { passive: true });
     var openY = 0; btn.addEventListener('click', function () { openY = window.scrollY; });
     document.addEventListener('sheet:open', function () { set(false); });
+  })();
+
+  /* ---------------- no sideways jump when a card or the résumé opens or closes ----------------
+     Locking the page hides a classic (non-overlay) scrollbar, which would widen the page by its width and shift the
+     board under the travelling picture. While locked, the page keeps that width as padding (html.sheet-open). */
+  (function scrollbarWidth() {
+    var root = document.documentElement;
+    function measure() { if (!root.classList.contains('sheet-open')) root.style.setProperty('--sbw', Math.max(0, window.innerWidth - root.clientWidth) + 'px'); }
+    measure(); window.addEventListener('resize', measure); window.addEventListener('load', measure);
   })();
 
   /* ---------------- keep the top bar pinned after a card or the resume closes ---------------- */
@@ -3010,7 +3125,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
       var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length || 1;
       $$('[data-reveal]', grid).forEach(function (c, i) { c.style.setProperty('--d', (i % cols) * 90 + 'ms'); });
     });
-    [['.facts', 70], ['.about-rows', 80], ['.contact .wrap', 90]].forEach(function (g) {
+    [['.about-rows', 80], ['.contact .wrap', 90]].forEach(function (g) {
       $$(g[0]).forEach(function (p) { $$(':scope > [data-reveal]', p).forEach(function (c, i) { c.style.setProperty('--d', i * g[1] + 'ms'); }); });
     });
     $$('.balloon').forEach(function (b, i) { b.style.setProperty('--i', i); });
@@ -3044,29 +3159,125 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
     stories.forEach(function (s, j) { s.hidden = j !== i; s.classList.remove('enter'); });
     void stories[i].offsetWidth; stories[i].classList.add('enter');
     sheet.setAttribute('aria-labelledby', 't-' + id);
-    crumb.textContent = (i < 4 ? 'HNTB' : 'Projects') + ' · ' + (i + 1) + ' of ' + n;
+    crumb.textContent = (stories[i].getAttribute('data-group') || 'Projects') + ' · ' + (i + 1) + ' of ' + n;
+    currentId = id;
     scroller.scrollTop = 0;
     try { history.replaceState(null, '', '#' + id); } catch (e) {}
     document.dispatchEvent(new CustomEvent('story:shown', { detail: id }));
   }
+
+  /* From the board, one motion: the moment a number is pressed, the live board view lifts into a travelling frame that
+     glides to the card's picture while the camera zooms in; both land together and the frame simply becomes the picture.
+     Closing is the same motion in reverse: the picture travels back onto the board while the camera pulls out. The
+     picture has the board's own aspect ratio, so the frame only moves and scales (never re-crops), and it shows live
+     frames the whole way, so there's no swap and no colour change. The card itself simply fades in around the
+     travelling picture (and dissolves on close). The frame lives in the top layer (a manual popover) so it can pass
+     over the open dialog. Work cards open the ordinary way. */
+  var canMorph = !reduce && 'showPopover' in HTMLElement.prototype && !!Element.prototype.animate;
+  var fromBoard = false, flight = null, currentId = null;
+  var EASE_IN = 'cubic-bezier(.37, 0, .63, 1)', EASE_OUT = 'cubic-bezier(.33, 1, .68, 1)';   // match the camera's curves (sine in-out; cubic out)
+  function picOf(id) { var st = document.getElementById(id); return st && st.querySelector('.sh-head .banner'); }
+  function picCanvas(b) { var c = b && b.querySelector('canvas'); return c && c.width > 300 ? c : null; }
+  function rectOf(el) { var r = el.getBoundingClientRect(); return { left: r.left, top: r.top, width: r.width, height: r.height }; }
+  function radiusOf(el) { return parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0; }
+  function makeFlight(w, h, src) {
+    var el = document.createElement('div');
+    el.className = 'flyshot'; el.setAttribute('popover', 'manual'); el.setAttribute('aria-hidden', 'true');
+    var c = document.createElement('canvas'); c.width = w; c.height = h;
+    if (src) c.getContext('2d').drawImage(src, 0, 0, w, h);
+    el.appendChild(c); document.body.appendChild(el);
+    try { el.showPopover(); } catch (e) { el.remove(); return null; }
+    return { el: el, c: c, anim: null };
+  }
+  function box(r, rad, ff) { return { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', borderRadius: rad + 'px', '--ff': ff + '%' }; }
+  function lerpR(a, b, e) { return { left: a.left + (b.left - a.left) * e, top: a.top + (b.top - a.top) * e, width: a.width + (b.width - a.width) * e, height: a.height + (b.height - a.height) * e }; }
+  /* Opening: the frame is clipped to the card the whole way, so on big screens (where the board is far bigger than the
+     card's picture) it never hangs over the card's edge; outside the card the board simply dims away with the page.
+     Its edges stay crisp and its corners round off as it lands. Closing: the card dissolves at once, so the frame flies
+     back freely over the page, its edges softening mid-flight like the zoomed board's. */
+  function glide(f, fromR, toR, r0, r1, dur, easing, clipTo) {
+    if (f.anim) f.anim.cancel();
+    var kf;
+    if (clipTo) {
+      var S = clipTo, R = radiusOf(sheet), N = 16; kf = [];
+      for (var i = 0; i <= N; i++) {
+        var e = i / N, F = lerpR(fromR, toR, e);
+        var t = Math.max(0, S.top - F.top), l = Math.max(0, S.left - F.left);
+        var r = Math.max(0, F.left + F.width - (S.left + S.width)), b = Math.max(0, F.top + F.height - (S.top + S.height));
+        var c = function (p, q) { return (p > 0.5 && q > 0.5 ? R : 0) + 'px'; };   // the card's own corners where both edges cut
+        var k = box(F, r0 + (r1 - r0) * e, 0);
+        k.offset = e;
+        k.clipPath = 'inset(' + t.toFixed(1) + 'px ' + r.toFixed(1) + 'px ' + b.toFixed(1) + 'px ' + l.toFixed(1) + 'px round ' + c(t, l) + ' ' + c(t, r) + ' ' + c(b, r) + ' ' + c(b, l) + ')';
+        kf.push(k);
+      }
+    } else kf = [box(fromR, r0, 0), { offset: 0.5, '--ff': '12%' }, box(toR, r1, 0)];
+    f.anim = f.el.animate(kf, { duration: dur, easing: easing, fill: 'forwards' });
+  }
+  function dropFlight() { var f = flight; flight = null; if (f) { try { f.el.hidePopover(); } catch (e) {} f.el.remove(); } }
+
   function open(id) {
     if (order.indexOf(id) < 0) return;
-    if (!sheet.open) {
-      lastFocus = document.activeElement;
-      show(id);
-      if (sheet.showModal) sheet.showModal(); else sheet.setAttribute('open', '');
-      // a closed dialog isn't laid out, so the reset in show() is ignored and the browser would
-      // restore the last card's scroll position; start every card at the top once it's visible
-      scroller.scrollTop = 0;
-      document.documentElement.classList.add('sheet-open');
-      document.dispatchEvent(new Event('sheet:open'));
-      $('#sheet-close').focus({ preventScroll: true });
-    } else show(id);
+    if (sheet.open) { show(id); return; }
+    lastFocus = document.activeElement;
+    fromBoard = false;
+    show(id);
+    if (sheet.showModal) sheet.showModal(); else sheet.setAttribute('open', '');
+    // a closed dialog isn't laid out, so the reset in show() is ignored and the browser would
+    // restore the last card's scroll position; start every card at the top once it's visible
+    scroller.scrollTop = 0;
+    document.documentElement.classList.add('sheet-open');
+    document.dispatchEvent(new Event('sheet:open'));
+    $('#sheet-close').focus({ preventScroll: true });
   }
+  // called by the board: opens the card and returns the travelling frame's canvas for the board to paint each frame into
+  function openFromBoard(id, fromEl, dur) {
+    if (!canMorph || sheet.open || order.indexOf(id) < 0 || !picOf(id)) return null;
+    open(id);
+    fromBoard = true;
+    sheet.classList.add('morph', 'morphing');
+    var f = makeFlight(fromEl.width, fromEl.height, fromEl);
+    if (!f) { sheet.classList.remove('morphing'); return null; }
+    var pic = picOf(id);
+    glide(f, rectOf(fromEl), rectOf(pic), 0, radiusOf(pic), dur, EASE_IN, rectOf(sheet));
+    flight = f; f.pic = pic; f.id = id;
+    return f.c;
+  }
+  // the camera has landed: the travelling frame already holds the final view, so it becomes the card's picture
+  function landed() {
+    if (!flight) return;
+    var pc = flight.pic.querySelector('canvas');
+    pc.width = flight.c.width; pc.height = flight.c.height;
+    pc.getContext('2d').drawImage(flight.c, 0, 0);
+    sheet.classList.remove('morphing');
+    dropFlight();
+  }
+  // closing: the picture travels back onto the board (turning around mid-flight if the card closes early)
+  function flyBack(toEl, dur) {
+    if (!canMorph || !fromBoard) return null;
+    var fromR, r0;
+    if (flight) { fromR = rectOf(flight.el); r0 = radiusOf(flight.el); }
+    else {
+      var pic = picOf(currentId), pc = picCanvas(pic);
+      if (!pc) return null;
+      flight = makeFlight(pc.width, pc.height, pc);
+      if (!flight) return null;
+      fromR = rectOf(pic); r0 = radiusOf(pic);
+    }
+    sheet.classList.add('morphing');
+    glide(flight, fromR, rectOf(toEl), r0, 0, dur, EASE_OUT);
+    return flight.c;
+  }
+  function backDone() { dropFlight(); }
+
   function close() {
     if (!sheet.open || sheet.classList.contains('closing')) return;
+    if (fromBoard) sheet.classList.add('morph');           // a plain dissolve, no slide
     sheet.classList.add('closing');
-    setTimeout(function () { sheet.classList.remove('closing'); if (sheet.close) sheet.close(); else { sheet.removeAttribute('open'); onClosed(); } }, reduce ? 0 : 170);
+    document.dispatchEvent(new Event('sheet:closing'));   // the board starts pulling back out right now
+    setTimeout(function () {
+      sheet.classList.remove('closing', 'morphing', 'morph'); fromBoard = false;
+      if (sheet.close) sheet.close(); else { sheet.removeAttribute('open'); onClosed(); }
+    }, reduce ? 0 : 180);
   }
   function onClosed() {
     document.documentElement.classList.remove('sheet-open');
@@ -3081,10 +3292,11 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   $$('.card[data-open]').forEach(function (c) {
     var id = c.getAttribute('data-open');
     c.addEventListener('click', function (e) { e.preventDefault(); open(id); });
-    ['mouseenter', 'focus'].forEach(function (ev) { c.addEventListener(ev, function () { document.dispatchEvent(new CustomEvent('story:hover', { detail: id })); }); });
+    c.addEventListener('mouseenter', function () { document.dispatchEvent(new CustomEvent('story:hover', { detail: id })); });
+    c.addEventListener('focus', function () { if (document.documentElement.getAttribute('data-input') === 'key') document.dispatchEvent(new CustomEvent('story:hover', { detail: id })); });
     ['mouseleave', 'blur'].forEach(function (ev) { c.addEventListener(ev, function () { document.dispatchEvent(new CustomEvent('story:hover', { detail: null })); }); });
   });
-  window.YVA = { open: open };
+  window.YVA = { open: open, openFromBoard: openFromBoard, landed: landed, flyBack: flyBack, backDone: backDone };
   function fromHash() { var id = (location.hash || '').slice(1); if (order.indexOf(id) >= 0) open(id); }
   window.addEventListener('hashchange', fromHash);
   fromHash();
@@ -3855,7 +4067,7 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   if (!dlg || typeof dlg.showModal !== 'function') return;
   var img = dlg.querySelector('.rv-page'), closeBtn = document.getElementById('rv-close'), root = document.documentElement;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var lastFocus = null, hadHash = false;
+  var lastFocus = null;
   function load() { if (img && !img.getAttribute('src')) img.setAttribute('src', img.getAttribute('data-src')); }
   function open(e) {
     if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0))) return;
