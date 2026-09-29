@@ -1331,9 +1331,8 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
 @keyframes dhPing { 0% { opacity: .8; scale: .4; } 80%, 100% { opacity: 0; scale: 1.25; } }
 .dh-k { font-family: var(--f-mono); font-size: var(--mono-s); font-weight: 700; text-transform: uppercase; color: var(--accent); padding: 3px 8px; border-radius: 999px; background: color-mix(in srgb, var(--glow) 14%, transparent); border: 1px solid color-mix(in srgb, var(--accent-line) 45%, transparent); }
 .dh-t { font-size: .95rem; font-weight: 600; color: var(--head); letter-spacing: -0.01em; }
-.demo.touched .dh-dot { background: var(--ok); }
+/* once a demo has been used, its hint just stops pulsing; the dot keeps its copper, like every other hint */
 .demo.touched .dh-dot::after { animation: none; opacity: 0; }
-.demo.touched .dh-k { color: var(--ink-2); background: transparent; border-color: var(--rule); }
 /* the main control breathes until the first touch */
 .oh-top { margin-bottom: 14px; }
 
