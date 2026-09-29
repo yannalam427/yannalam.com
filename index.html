@@ -1341,8 +1341,8 @@ details[open] > .d-body, details.reveal[open] > :not(summary) { animation: discl
   mask-composite: intersect;
 }
 .flyshot canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-/* the window takes on the picture's own ground and hairline as it leaves the board, so it reads as a picture the
-   whole way (even where the view still shows empty space beyond the board's edge) and lands as exactly that picture */
+/* the window takes on the picture's own ground and hairline as it leaves the board (and sheds them as it goes back),
+   so it reads as a picture the whole way and lands as exactly that picture; hero.js sets them frame by frame */
 .flyshot .fs-bg { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 65%, var(--ground-2), var(--ground)); opacity: 0; }
 /* nothing waits in the picture's place while it travels */
 .sheet.morphing .sh-head .thumb.banner { background: none; border-color: transparent; }
@@ -1362,7 +1362,6 @@ dialog.sheet.morph.closing { animation: sheetFadeOut .18s ease forwards; }
 dialog.sheet[open]::backdrop { animation: backdropIn .3s ease both; }
 dialog.sheet.morph[open]::backdrop { animation: backdropIn .5s ease both; }
 dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards; }
-dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-bezier(.33, 1, .68, 1) forwards; }   /* brightens as the picture settles back */
 @keyframes backdropIn { from { opacity: 0; } }
 @keyframes backdropOut { to { opacity: 0; } }
 @keyframes sheetFade { from { opacity: 0; } }
@@ -2828,60 +2827,132 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     var c = closeUp(s);
     c.t.applyMatrix4(world.matrixWorld); c.cp.applyMatrix4(world.matrixWorld);
     var dv = c.cp.clone().sub(c.t), dist = dv.length();
-    zoom = { s: s, target: c.t, az: Math.atan2(dv.x, dv.z), el: Math.asin(dv.y / dist), dist: dist, rot: world.rotation.y, k: 0, win: null };
+    zoom = { s: s, target: c.t, az: Math.atan2(dv.x, dv.z), el: Math.asin(dv.y / dist), dist: dist, rot: world.rotation.y, k: 0, away: false, trip: null };
     fly = { t0: 0, dur: ZOOM_IN, dir: 1, lift: true };   // the lift itself starts on the next frame (see frame())
     fig.classList.add('zooming');
     if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
   }
-  /* The lift, one motion from the board into the card. On the first frame the page's board is copied into a still
-     "ghost" that stays on the page and dims with it, and a window the exact size of the card's picture opens over the
-     landmark, showing exactly the board beneath it. Then the window glides into the card's picture while its view dives
-     onto the landmark, and it lands as the picture. It never changes size, so nothing overhangs the card and every edge
-     moves together. The board holds still (signals, plane, cars, light) for the whole trip, so on the way back the
-     window settles into a board that is exactly as it was. */
+
+  /* ---------------- the window: how the view travels between the board and the card ----------------
+     Opening. A window the exact size of the card's picture lifts off the board, showing exactly the board beneath it:
+     over the landmark, but kept on the board where the board is bigger than the picture (so it lifts a full piece of
+     board) and centred on the board where it's smaller (so on phones the whole board lifts). It never starts outside
+     the card's edges or over its top bar, so no edge ever hangs off the card. The rest of the board, held still, fades
+     away with the page. The window glides into the picture while its view dives onto the landmark, and lands as the
+     picture.
+     Closing. The picture leaves the card and grows back into the whole board while the view pulls out; the live board
+     takes over exactly where it lands. There is only ever one board on screen.
+     The camera, the window's place, its view and its edges all run off this loop's clock, so they can't drift apart.
+     demos.js owns the window element and the card; this decides where the window goes and what it shows. */
+  var FEATHER = 9;   // % of the window: soft edges while a lifted piece still sits among the rest of the board
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpR(a, b, t) { return { left: lerp(a.left, b.left, t), top: lerp(a.top, b.top, t), width: lerp(a.width, b.width, t), height: lerp(a.height, b.height, t) }; }
+  function boardRect() { var r = canvas.getBoundingClientRect(); return { left: r.left, top: r.top, width: r.width, height: r.height }; }
+  // B: the board on screen, at: the landmark on screen, P: the card's picture, C: the card
+  function startRect(B, at, P, C) {
+    var m = Math.max(0, Math.min(P.left - C.left, C.left + C.width - P.left - P.width));   // the picture's side margin in the card
+    function place(a, b0, bs, s, lo, hi) {
+      var x = bs > s ? Math.min(Math.max(a - s / 2, b0), b0 + bs - s) : b0 + (bs - s) / 2;
+      return Math.max(lo, Math.min(x, hi));
+    }
+    return {
+      left: place(at.x, B.left, B.width, P.width, C.left + m, C.left + C.width - m - P.width),
+      top: place(at.y, B.top, B.height, P.height, P.top, C.top + C.height - m - P.height),
+      width: P.width, height: P.height
+    };
+  }
   function liftOff() {
-    renderer.render(scene, camera);          // the board as it is on the page, this very frame
-    snapGhost(); useGhost(true);
-    var r = canvas.getBoundingClientRect();
-    var p = projectTo(zoom.target), at = { x: r.left + p.x, y: r.top + p.y };
-    var w = window.YVA && window.YVA.openFromBoard ? window.YVA.openFromBoard(zoom.s.id, at, ZOOM_IN) : null;
-    if (!w) {                                  // no popover support: zoom the board itself and open the card as it lands
-      useGhost(false);
+    if (camera.view && camera.view.enabled) camera.clearViewOffset();
+    renderer.render(scene, camera);            // the board as it is on the page, this very frame
+    var B = boardRect(), p = projectTo(zoom.target);
+    var o = window.YVA && window.YVA.openFromBoard ? window.YVA.openFromBoard(zoom.s.id) : null;
+    if (!o) {                                  // no popover support: zoom the board itself and open the card as it lands
       clearTimeout(zoomTimer); var id = zoom.s.id; zoomTimer = setTimeout(function () { if (window.YVA) window.YVA.open(id); }, ZOOM_IN - 90);
       return;
     }
-    flight = w.c;
-    zoom.win = { w: w.w, g1: W / w.w, home: p };
+    boardAway();
+    var R0 = startRect(B, { x: B.left + p.x, y: B.top + p.y }, o.pic, o.card), bw = o.f.bw;   // bw: top, right, bottom, left
+    var iw = R0.width - bw[1] - bw[3], ih = R0.height - bw[0] - bw[2], pr = Math.min(window.devicePixelRatio || 1, 3);
+    var cx = R0.left + bw[3] - B.left + iw / 2, cy = R0.top + bw[0] - B.top + ih / 2;   // the window's middle, on the board
+    var whole = R0.left <= B.left + 0.5 && R0.top <= B.top + 0.5 && R0.left + R0.width >= B.left + B.width - 0.5 && R0.top + R0.height >= B.top + B.height - 0.5;
+    zoom.away = true;
+    zoom.trip = {
+      f: o.f, dir: 1, R0: R0, R1: o.pic, iw: iw, ih: ih,
+      rx: (p.x - cx) / iw, ry: (p.y - cy) / ih,   // where the landmark sits in the window as it lifts (0: dead centre)
+      ff: whole ? 0 : FEATHER,                    // lifting the whole board cuts through nothing, so it needs no soft edge
+      size: [Math.round(iw * pr), Math.round(ih * pr)]
+    };
+    flight = o.f.c;
+  }
+  // the window's place, look and view for this frame; e: how far along its trip it is (0 at the start, 1 at the end);
+  // zk: how far the camera is zoomed in
+  function tripFrame(t, e, zk) {
+    var R = lerpR(t.R0, t.R1, e), look, crop;
+    if (t.dir > 0) {
+      // soft-edged and bare while it sits on the board, a crisp picture (ground and hairline) well before it reaches its place
+      look = { ff: t.ff * Math.max(0, 1 - e / 0.45), ground: Math.min(1, e / 0.4), line: Math.min(1, e / 0.4), bw: 1 };
+      // its view starts 1:1 with the board beneath it and ends as the whole close-up (log-even in between, like the dive),
+      // and the landmark moves steadily from wherever it sat in the window to the middle
+      var sw = t.iw * Math.pow(W / t.iw, e), sh = t.ih * Math.pow(H / t.ih, e), lp = projectTo(zoom.target);
+      crop = { x: lp.x - t.rx * (1 - e) * sw, y: lp.y - t.ry * (1 - e) * sh, w: sw, h: sh };
+    } else {
+      // the way in, reversed: it crosses the page as the picture (ground, hairline, crisp edges), sheds that frame as it
+      // settles into the board's place (its edges softening like the zoomed board's while the view is still pulling out),
+      // and lands bare and exactly the board, so the live board takes over without a seam
+      var k = Math.min(1, (1 - e) / 0.4), l0 = t.look0, c0 = t.crop0;
+      look = { ff: l0.ff * (1 - e) + 16 * zk * (1 - k), ground: l0.ground * k, line: l0.line * k, bw: l0.bw * k };
+      crop = { x: lerp(c0.x, W / 2, e), y: lerp(c0.y, H / 2, e), w: c0.w * Math.pow(W / c0.w, e), h: c0.h * Math.pow(H / c0.h, e) };
+    }
+    t.f.place(R, look);
+    t.crop = crop;
+    camera.setViewOffset(W, H, crop.x - crop.w / 2, crop.y - crop.h / 2, crop.w, crop.h);
   }
   function projectTo(v) {                      // where a point lands in the board canvas, in CSS pixels (no window offset)
     if (camera.view && camera.view.enabled) camera.clearViewOffset();
     camera.updateMatrixWorld(); tmp.copy(v).project(camera);
     return { x: (tmp.x + 1) / 2 * W, y: (1 - tmp.y) / 2 * H };
   }
-  // the page's board, frozen: shown in place of the live canvas while the camera is away
+  // the page's board, frozen: stands in for the live canvas as the camera leaves, and dissolves with the page
   var ghost = document.createElement('canvas');
   ghost.className = 'board-ghost'; ghost.setAttribute('aria-hidden', 'true');
   canvas.insertAdjacentElement('afterend', ghost);
-  function snapGhost() {
+  function boardAway() {
     if (ghost.width !== canvas.width || ghost.height !== canvas.height) { ghost.width = canvas.width; ghost.height = canvas.height; }
     var g = ghost.getContext('2d'); g.clearRect(0, 0, ghost.width, ghost.height);
     try { g.drawImage(canvas, 0, 0); } catch (e) {}
+    ghost.style.transition = 'none'; ghost.style.opacity = '1'; ghost.style.display = 'block';
+    canvas.style.transition = 'none'; canvas.style.opacity = '0';
+    void ghost.offsetWidth;
+    ghost.style.transition = 'opacity .26s ease'; ghost.style.opacity = '0';
   }
-  function useGhost(on) { ghost.style.display = on ? 'block' : ''; canvas.style.opacity = on ? '0' : ''; }
+  function boardBack(fadeMs) {                 // the live board, already drawn at rest this frame, is back on the page
+    ghost.style.display = ''; ghost.style.transition = ''; ghost.style.opacity = '';
+    canvas.style.transition = fadeMs ? 'opacity ' + fadeMs + 'ms ease' : 'none';
+    canvas.style.opacity = '';
+  }
   // closing: the camera starts pulling back out the moment the card starts to dissolve (fast away, gentle landing)
   document.addEventListener('sheet:closing', function () {
     if (!zoom || (fly && fly.dir < 0)) return;
     clearTimeout(zoomTimer);
-    fly = { t0: performance.now(), dur: ZOOM_OUT, dir: -1, from: zoom.k || 1 };
-    // the picture glides back to its spot on the board while the view pulls out: the lift in reverse
-    if (zoom.win) {
-      var r = canvas.getBoundingClientRect();
-      var w = window.YVA && window.YVA.flyBack ? window.YVA.flyBack({ x: r.left + zoom.win.home.x, y: r.top + zoom.win.home.y }, ZOOM_OUT) : null;
-      flight = w ? w.c : null;
-      // nothing to fly back (the picture was scrolled away): the still board is already on the page, so the camera is
-      // simply home again; the next frame renders it exactly as the still board and swaps it in (endFlightAfterRender)
-      if (!flight) { zoom = null; fly = null; fig.classList.remove('zooming'); endFlightAfterRender = 'out'; }
+    if (zoom.away) {
+      var o = window.YVA && window.YVA.flyBack ? window.YVA.flyBack(zoom.s.id) : null;   // the picture, leaving the card
+      if (!o) {
+        // nothing to follow back (the picture was scrolled out of sight): the camera is simply home again, and the board
+        // fades back in on the page as the card dissolves
+        zoom = null; fly = null; fig.classList.remove('zooming'); endFlightAfterRender = 'fade';
+        paused = false; cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame);
+        return;
+      }
+      var prev = zoom.trip;                     // turning around mid-flight starts from wherever the window has got to
+      zoom.trip = {
+        f: o.f, dir: -1, R0: o.rect, R1: boardRect(),
+        look0: o.f.look || { ff: 0, ground: 1, line: 1, bw: 1 },
+        crop0: prev && prev.crop ? prev.crop : { x: W / 2, y: H / 2, w: W, h: H },
+        size: [canvas.width, canvas.height]      // it lands 1:1 on the board's own pixels
+      };
+      flight = o.f.c;
     }
+    fly = { t0: performance.now(), dur: ZOOM_OUT, dir: -1, from: zoom.k || 1 };
     paused = false; cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame);
   });
   var flight = null, endFlightAfterRender = null, ZOOM_IN = 700, ZOOM_OUT = 640;
@@ -3004,14 +3075,15 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     restPos.set(0, Math.sin(elev) * R, Math.cos(elev) * R);
     restTgt.set(0, 0.35 - scrollP * 0.3, 0);
     var rot = -Math.PI / 4 + tilt.x * 0.22 + scrollP * 0.35;
-    var zk = 0;
+    var zk = 0, trip = null, te = 0;                      // the window's trip this frame, and how far along it is
     if (zoom) {
       if (fly && fly.lift) fly.t0 = now;
-      var fp = fly ? Math.min(1, (now - fly.t0) / fly.dur) : 1;
+      var fp = fly ? Math.max(0, Math.min(1, (now - fly.t0) / fly.dur)) : 1;
       zoom.k = fly ? (fly.dir > 0 ? ease(fp) : fly.from * Math.pow(1 - fp, 3)) : 1;   // in: ease in-out; out: fast away, gentle landing
       zk = zoom.k;
       rot += (zoom.rot - rot) * zk;
-      if (fly && fly.dir < 0 && fp > 0.55 && !flight) fig.classList.remove('zooming');   // the numbers come back as the board settles
+      if (fly && zoom.trip) { trip = zoom.trip; te = fly.dir > 0 ? zk : 1 - Math.pow(1 - fp, 3); }   // the window keeps the camera's pace
+      if (fly && fly.dir < 0 && fp > 0.55 && !zoom.away) fig.classList.remove('zooming');   // board zoomed in place: the numbers come back as it settles
       if (fly && fp >= 1) {
         var landedIn = fly.dir > 0;
         if (!landedIn) { zoom = null; fig.classList.remove('zooming'); }
@@ -3039,26 +3111,29 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     // while zoomed, the frame's edges feather into the page so the close-up never ends in a hard rectangle
     var zf = zk.toFixed(3); if (zf !== lastZf) { canvas.style.setProperty('--zf', zf); lastZf = zf; }
 
-    if (fly && fly.lift) { fly.lift = false; liftOff(); }
-    if (zoom && zoom.win) {
-      /* the window's view: the part of the (diving) camera's picture around the landmark, centred on it, sized so it
-         starts 1:1 with the page and ends as the whole close-up (log-even in between, like the dive itself) */
-      var lp = projectTo(zoom.target), sw = zoom.win.w * Math.pow(zoom.win.g1, zk), sh = sw * H / W;
-      camera.setViewOffset(W, H, lp.x - sw / 2, lp.y - sh / 2, sw, sh);
-    } else if (camera.view && camera.view.enabled) camera.clearViewOffset();
+    if (fly && fly.lift) { fly.lift = false; liftOff(); if (zoom.trip) { trip = zoom.trip; te = 0; } }
+    if (trip) tripFrame(trip, te, zk);
+    else if (camera.view && camera.view.enabled) camera.clearViewOffset();
     renderer.render(scene, camera);
     if (flight) {
-      // the travelling window shows this exact frame (a WebGL canvas is readable right after it renders)
+      // the travelling window shows this exact frame (a WebGL canvas is readable right after it renders); a resize and
+      // its first paint happen together, so it's never seen blank
+      if (trip && trip.size) { trip.f.size(trip.size[0], trip.size[1]); trip.size = null; }
       var fg = flight.getContext('2d');
       fg.clearRect(0, 0, flight.width, flight.height);
       try { fg.drawImage(canvas, 0, 0, flight.width, flight.height); } catch (e) {}
     }
     if (endFlightAfterRender) {
       var how = endFlightAfterRender; endFlightAfterRender = null;
-      if (how === 'in') { if (flight) { flight = null; if (window.YVA.landed) window.YVA.landed(); } }   // the window becomes the card's picture
-      else { useGhost(false); if (flight) { flight = null; if (window.YVA.backDone) window.YVA.backDone(); } }   // and here, the live board again
+      if (how === 'in') {                                   // the window becomes the card's picture
+        if (zoom) zoom.trip = null;
+        if (flight) { flight = null; if (window.YVA.landed) window.YVA.landed(); }
+      } else {                                              // and here, the live board again (faded in if nothing flew back)
+        boardBack(how === 'fade' ? 180 : 0);
+        if (flight) { flight = null; if (window.YVA.backDone) window.YVA.backDone(); }
+      }
     }
-    if (!zoom) updateBalloons();                            // while the camera is away they stay put on the still board (and are faded out)
+    if (!zoom) updateBalloons();                            // while the camera is away they stay put (and are faded out)
     dirty = false;
     if (visible && (!paused || fly) && !reduce) raf = requestAnimationFrame(frame); else raf = 0;
   }
@@ -3231,56 +3306,40 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     document.dispatchEvent(new CustomEvent('story:shown', { detail: id }));
   }
 
-  /* From the board, one motion. The board lifts a window, the exact size of the card's picture, off the landmark: it
-     starts as exactly the board beneath it (soft-edged, so it simply stays lit while the page dims), glides into the
-     card's picture while its view dives onto the landmark (hero.js paints every frame into it), and lands as the
-     picture. It never changes size, so nothing overhangs the card and every edge moves together. The card fades in
-     around it. Closing is the same motion in reverse, and the page brightens as the window settles back into the
-     board. The window lives in the top layer (a manual popover) so it can pass over the open dialog. Work cards open
-     the ordinary way. */
-  var canMorph = !reduce && 'showPopover' in HTMLElement.prototype && !!Element.prototype.animate;
-  var fromBoard = false, flight = null, currentId = null, closeMs = 0;
-  var EASE_IN = 'cubic-bezier(.37, 0, .63, 1)', EASE_OUT = 'cubic-bezier(.33, 1, .68, 1)';   // match the camera's curves (sine in-out; cubic out)
-  var FEATHER = 9;   // % of the window: soft edges while it sits on the board, crisp by the time it reaches the card
+  /* From the board, one motion (hero.js drives it frame by frame and describes the choreography): the card fades in
+     around a travelling window that lands as its picture, and when it closes, the picture leaves the card and becomes
+     the board again while the card dissolves. The window lives in the top layer (a manual popover) so it can pass over
+     the open dialog. Work cards open the ordinary way. */
+  var canMorph = !reduce && 'showPopover' in HTMLElement.prototype;
+  var fromBoard = false, flight = null, currentId = null;
   function picOf(id) { var st = document.getElementById(id); return st && st.querySelector('.sh-head .banner'); }
   function picCanvas(b) { var c = b && b.querySelector('canvas'); return c && c.width > 300 ? c : null; }
   function rectOf(el) { var r = el.getBoundingClientRect(); return { left: r.left, top: r.top, width: r.width, height: r.height }; }
-  function radiusOf(el) { return parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0; }
-  function around(at, w, h) { return { left: at.x - w / 2, top: at.y - h / 2, width: w, height: h }; }
-  // the window: the picture's own border widths (it lands exactly on the picture), a ground layer, then the view
-  function makeFlight(pic, pr, src) {
+  // the travelling window: the picture's own corners and border widths, its ground, then the view
+  function makeFlight(pic, src) {
     var cs = getComputedStyle(pic), el = document.createElement('div');
     el.className = 'flyshot'; el.setAttribute('popover', 'manual'); el.setAttribute('aria-hidden', 'true');
-    el.style.borderWidth = cs.borderTopWidth + ' ' + cs.borderRightWidth + ' ' + cs.borderBottomWidth + ' ' + cs.borderLeftWidth;
+    el.style.borderRadius = cs.borderTopLeftRadius;
     var bg = document.createElement('div'); bg.className = 'fs-bg';
-    var S = pic.getBoundingClientRect();
-    var iw = S.width - parseFloat(cs.borderLeftWidth) - parseFloat(cs.borderRightWidth), ih = S.height - parseFloat(cs.borderTopWidth) - parseFloat(cs.borderBottomWidth);
-    var c = document.createElement('canvas'); c.width = Math.round(iw * pr); c.height = Math.round(ih * pr);
-    if (src) c.getContext('2d').drawImage(src, 0, 0, c.width, c.height);
+    var c = document.createElement('canvas');
+    if (src) { c.width = src.width; c.height = src.height; c.getContext('2d').drawImage(src, 0, 0); }
     el.appendChild(bg); el.appendChild(c); document.body.appendChild(el);
     try { el.showPopover(); } catch (e) { el.remove(); return null; }
-    var line = getComputedStyle(document.documentElement).getPropertyValue('--rule-2').trim() || cs.borderBottomColor;   // the picture's hairline colour
-    return { el: el, bg: bg, c: c, iw: iw, line: line, anim: null, bgAnim: null };
-  }
-  function box(r, rad, ff, line) { return { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', borderRadius: rad + 'px', '--ff': ff + '%', borderColor: line }; }
-  /* toCard: soft-edged and bare while it sits on the board, a crisp picture (ground and hairline) by the time it reaches
-     the card; otherwise the reverse, settling back into the board */
-  function glide(f, fromR, toR, rad, dur, easing, toCard) {
-    // turning around mid-flight starts from wherever the hairline and ground have got to
-    var from = f.anim ? getComputedStyle(f.el).borderTopColor : f.line, o = f.bgAnim ? +getComputedStyle(f.bg).opacity : 1;
-    if (f.anim) f.anim.cancel();
-    if (f.bgAnim) f.bgAnim.cancel();
-    var clear = 'rgba(0, 0, 0, 0)', kf, bgk;
-    if (toCard) {
-      kf = [box(fromR, rad, FEATHER, clear), { offset: 0.4, borderColor: f.line }, { offset: 0.45, '--ff': '0%' }, box(toR, rad, 0, f.line)];
-      bgk = [{ opacity: 0 }, { offset: 0.4, opacity: 1 }, { opacity: 1 }];
-    } else {
-      // the picture's ground and hairline go as soon as it leaves the card, so no pale box crosses the dimmed page
-      kf = [box(fromR, rad, 0, from), { offset: 0.3, borderColor: clear }, { offset: 0.55, '--ff': '0%' }, box(toR, rad, FEATHER, clear)];
-      bgk = [{ opacity: o }, { offset: 0.3, opacity: 0 }, { opacity: 0 }];
-    }
-    f.anim = f.el.animate(kf, { duration: dur, easing: easing, fill: 'forwards' });
-    f.bgAnim = f.bg.animate(bgk, { duration: dur, easing: easing, fill: 'forwards' });
+    var bw = [cs.borderTopWidth, cs.borderRightWidth, cs.borderBottomWidth, cs.borderLeftWidth].map(function (v) { return parseFloat(v) || 0; });
+    var f = { el: el, c: c, bw: bw, pic: pic, rect: null, look: null };
+    f.size = function (w, h) { if (c.width !== w || c.height !== h) { c.width = w; c.height = h; } };
+    /* r: its box on screen; k: how it looks: ff, the soft edge (% of its size); ground and line, the picture's ground and
+       hairline (0 to 1); bw, its border widths (0 to 1: the view fills the box inside them) */
+    f.place = function (r, k) {
+      var s = el.style;
+      s.left = r.left + 'px'; s.top = r.top + 'px'; s.width = r.width + 'px'; s.height = r.height + 'px';
+      s.borderWidth = bw.map(function (b) { return b * k.bw + 'px'; }).join(' ');
+      s.borderColor = 'color-mix(in srgb, var(--rule-2) ' + (k.line * 100).toFixed(1) + '%, transparent)';
+      s.setProperty('--ff', k.ff.toFixed(2) + '%');
+      bg.style.opacity = k.ground;
+      f.rect = r; f.look = k;
+    };
+    return f;
   }
   function dropFlight() { var f = flight; flight = null; if (f) { try { f.el.hidePopover(); } catch (e) {} f.el.remove(); } }
 
@@ -3298,19 +3357,16 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     document.dispatchEvent(new Event('sheet:open'));
     $('#sheet-close').focus({ preventScroll: true });
   }
-  /* called by the board with the landmark's point on screen: opens the card and returns the window's canvas (for the
-     board to paint every frame into) and its size, which is the card picture's size */
-  function openFromBoard(id, at, dur) {
+  // called by the board: opens the card and hands over the window, with the picture's and the card's places on screen
+  function openFromBoard(id) {
     if (!canMorph || sheet.open || order.indexOf(id) < 0 || !picOf(id)) return null;
     open(id);
     fromBoard = true;
     sheet.classList.add('morph', 'morphing');
-    var pic = picOf(id), S = rectOf(pic), pr = Math.min(window.devicePixelRatio || 1, 3);
-    var f = makeFlight(pic, pr, null);
+    var pic = picOf(id), f = makeFlight(pic, null);
     if (!f) { sheet.classList.remove('morphing'); return null; }
-    glide(f, around(at, S.width, S.height), S, radiusOf(pic), dur, EASE_IN, true);
-    flight = f; f.pic = pic; f.id = id;
-    return { c: f.c, w: f.iw };
+    flight = f;
+    return { f: f, pic: rectOf(pic), card: rectOf(sheet) };
   }
   // the camera has landed: the window already holds the final view, so it becomes the card's picture
   function landed() {
@@ -3321,24 +3377,22 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     sheet.classList.remove('morphing');
     dropFlight();
   }
-  /* closing: the picture glides back to its spot on the board (turning around mid-flight if the card closes early).
-     If the visitor has scrolled the picture out of sight there's nothing to follow back, so this returns null and the
-     card simply dissolves over the board, which is already there, exactly as it was. */
-  function flyBack(at, dur) {
-    if (!canMorph || !fromBoard) return null;
-    var pic = picOf(currentId), fromR;
-    if (flight) fromR = rectOf(flight.el);
-    else {
-      var pc = picCanvas(pic), sc = scroller.getBoundingClientRect();
-      fromR = rectOf(pic);
-      if (!pc || fromR.top < sc.top - 1 || fromR.top + fromR.height > sc.bottom + 1) return null;   // not (fully) in view
-      flight = makeFlight(pic, Math.min(window.devicePixelRatio || 1, 3), pc);
-      if (!flight) return null;
-    }
+  /* closing: hands the board the picture as a window, starting exactly where the picture is (or the window itself, if it
+     is still on its way in). If the visitor has scrolled the picture out of sight, or moved on to another project,
+     there's nothing to follow back: this returns null and the board simply comes back as the card dissolves. */
+  function flyBack(id) {
+    if (!canMorph || !fromBoard || id !== currentId) return null;
+    if (flight) { sheet.classList.add('morphing'); return { f: flight, rect: flight.rect }; }
+    var pic = picOf(currentId), pc = picCanvas(pic), sc = scroller.getBoundingClientRect();
+    if (!pc) return null;
+    var P = rectOf(pic);
+    if (P.top < sc.top - 1 || P.top + P.height > sc.bottom + 1) return null;
+    var f = makeFlight(pic, pc);
+    if (!f) return null;
+    f.place(P, { ff: 0, ground: 1, line: 1, bw: 1 });
     sheet.classList.add('morphing');
-    glide(flight, fromR, around(at, fromR.width, fromR.height), radiusOf(pic), dur, EASE_OUT, false);
-    closeMs = dur;
-    return { c: flight.c };
+    flight = f;
+    return { f: f, rect: P };
   }
   function backDone() { dropFlight(); }
 
@@ -3346,13 +3400,12 @@ dialog.sheet[open].closing.slow::backdrop { animation: backdropOut .64s cubic-be
     if (!sheet.open || sheet.classList.contains('closing')) return;
     if (fromBoard) sheet.classList.add('morph');           // a plain dissolve, no slide
     sheet.classList.add('closing');
-    closeMs = 0;
-    document.dispatchEvent(new Event('sheet:closing'));   // the board starts pulling back out right now (and may fly the picture back)
-    if (closeMs) sheet.classList.add('slow');             // then the page brightens with the picture's return, not all at once
+    // the card and the dimming go at once; the board starts pulling back out right now and takes the picture back
+    document.dispatchEvent(new Event('sheet:closing'));
     setTimeout(function () {
-      sheet.classList.remove('closing', 'morphing', 'morph', 'slow'); fromBoard = false;
+      sheet.classList.remove('closing', 'morphing', 'morph'); fromBoard = false;
       if (sheet.close) sheet.close(); else { sheet.removeAttribute('open'); onClosed(); }
-    }, reduce ? 0 : (closeMs || 180));
+    }, reduce ? 0 : 180);
   }
   function onClosed() {
     document.documentElement.classList.remove('sheet-open');
