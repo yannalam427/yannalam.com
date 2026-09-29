@@ -1575,6 +1575,10 @@ dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards
 .js-motion .sheet.morph .story.enter > .hw { animation-delay: .46s; }
 /* inside a Try it row the row already says it's a simulation (and the caption says so again): no label pill */
 .sim .demo-hint .dh-k { display: none; }
+/* ...so the dot and the instruction share one row; a long instruction wraps beside the dot, which stays on its first line */
+.sim .demo-hint { flex-wrap: nowrap; align-items: flex-start; }
+.sim .dh-t { min-width: 0; line-height: 1.45; }
+.sim .dh-dot { margin-top: calc(.95rem * 1.45 / 2 - 4px); }
 
 </style>
 </head>
