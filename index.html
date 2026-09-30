@@ -1141,24 +1141,48 @@ dialog.rv::backdrop { background: rgba(10, 18, 14, .5); -webkit-backdrop-filter:
 dialog.tour {
   padding: 0; border: 0; margin: auto; width: min(1040px, calc(100% - 40px)); max-width: none;
   height: calc(100% - 40px); max-height: calc(100% - 40px); border-radius: 24px; overflow: hidden;
-  background: radial-gradient(90% 80% at 32% 45%, #1F382C 0%, #111D17 55%, #0B130F 100%); color: #ECE6D6;
-  box-shadow: 0 40px 120px -30px rgba(0, 0, 0, .7), 0 0 0 1px rgba(236, 230, 214, .08); color-scheme: dark;
+  /* light: an ivory stage like the rest of the site; dark: the deep green stage (the screenshots themselves stay dark) */
+  --t-bg: radial-gradient(90% 80% at 32% 45%, #FBF9F2 0%, #F4F0E4 55%, #EDE7D6 100%);
+  --t-h: #1E3B2F; --t-p: #3D4A42; --t-mute: #5F6B63; --t-accent: #9A5626;
+  --t-line: rgba(30, 59, 47, .16); --t-fill: rgba(30, 59, 47, .04); --t-dash: rgba(30, 59, 47, .14);
+  --t-next: #1E3B2F; --t-next-ink: #F6F2E6; --t-next-hover: #2B5040;
+  --t-frame: rgba(30, 59, 47, .18); --t-frame-shadow: 0 34px 60px -34px rgba(30, 59, 47, .5), 0 0 0 8px rgba(30, 59, 47, .04);
+  --t-shadow: 0 40px 120px -30px rgba(0, 0, 0, .45), 0 0 0 1px var(--rule);
+  background: var(--t-bg); color: var(--t-p); box-shadow: var(--t-shadow); color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) dialog.tour {
+    --t-bg: radial-gradient(90% 80% at 32% 45%, #1F382C 0%, #111D17 55%, #0B130F 100%);
+    --t-h: #F3EEDF; --t-p: #D6D0BF; --t-mute: #9FAEA3; --t-accent: #EDA56C;
+    --t-line: rgba(236, 230, 214, .2); --t-fill: rgba(236, 230, 214, .06); --t-dash: rgba(236, 230, 214, .18);
+    --t-next: #F3EEDF; --t-next-ink: #16291F; --t-next-hover: #fff;
+    --t-frame: rgba(236, 230, 214, .16); --t-frame-shadow: 0 40px 70px -34px rgba(0, 0, 0, .9), 0 0 0 8px rgba(236, 230, 214, .035);
+    --t-shadow: 0 40px 120px -30px rgba(0, 0, 0, .7), 0 0 0 1px rgba(236, 230, 214, .08); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] dialog.tour {
+  --t-bg: radial-gradient(90% 80% at 32% 45%, #1F382C 0%, #111D17 55%, #0B130F 100%);
+  --t-h: #F3EEDF; --t-p: #D6D0BF; --t-mute: #9FAEA3; --t-accent: #EDA56C;
+  --t-line: rgba(236, 230, 214, .2); --t-fill: rgba(236, 230, 214, .06); --t-dash: rgba(236, 230, 214, .18);
+  --t-next: #F3EEDF; --t-next-ink: #16291F; --t-next-hover: #fff;
+  --t-frame: rgba(236, 230, 214, .16); --t-frame-shadow: 0 40px 70px -34px rgba(0, 0, 0, .9), 0 0 0 8px rgba(236, 230, 214, .035);
+  --t-shadow: 0 40px 120px -30px rgba(0, 0, 0, .7), 0 0 0 1px rgba(236, 230, 214, .08); color-scheme: dark;
 }
 dialog.tour[open] { display: flex; flex-direction: column; animation: tourIn .5s cubic-bezier(.2,.8,.2,1); }
 dialog.tour.closing { animation: sheetOut .2s ease forwards; }
-dialog.tour::backdrop { background: rgba(6, 10, 8, .7); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+dialog.tour::backdrop { background: rgba(6, 10, 8, .6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 @keyframes tourIn { from { opacity: 0; transform: scale(.97); } }
 .tour-bar { display: flex; align-items: center; gap: 14px; padding: 14px 14px 4px 24px; flex: none; }
-.tour-title { margin-right: auto; display: flex; align-items: baseline; gap: 10px; font-weight: 600; color: #F3EEDF; white-space: nowrap; }
-.tour-sub { font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: #9FAEA3; font-weight: 400; }
-.tour-x { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(236, 230, 214, .2); background: rgba(236, 230, 214, .06); color: #F3EEDF; font: inherit; font-weight: 600; font-size: .86rem; cursor: pointer; }
+.tour-title { margin-right: auto; display: flex; align-items: baseline; gap: 10px; font-weight: 600; color: var(--t-h); white-space: nowrap; }
+.tour-sub { font-family: var(--f-mono); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--t-mute); font-weight: 400; }
+.tour-x { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--t-line); background: var(--t-fill); color: var(--t-h); font: inherit; font-weight: 600; font-size: .86rem; cursor: pointer; }
 .tour-x:hover { border-color: #D08A4E; }
 .tour-body { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; gap: clamp(28px, 6vw, 72px); padding: 8px clamp(20px, 4vw, 48px) 24px; }
 .tour-phone { --ph: min(640px, calc(100vh - 150px)); flex: none; height: var(--ph); aspect-ratio: 540 / 955; touch-action: pan-y; }
 @supports (height: 100dvh) { .tour-phone { --ph: min(640px, calc(100dvh - 150px)); } }
 .tour-shot {
   position: relative; width: 100%; height: 100%; border-radius: 28px; overflow: hidden; background: #0F1A14;
-  border: 1px solid rgba(236, 230, 214, .16); box-shadow: 0 40px 70px -34px rgba(0, 0, 0, .9), 0 0 0 8px rgba(236, 230, 214, .035);
+  border: 1px solid var(--t-frame); box-shadow: var(--t-frame-shadow);
 }
 .tour-shot img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .5s ease; }
 .tour-shot img.on { opacity: 1; }
@@ -1178,26 +1202,26 @@ dialog.tour::backdrop { background: rgba(6, 10, 8, .7); -webkit-backdrop-filter:
 }
 .tour-spot.instant .tour-pin { transition: none; }
 .tour-card { width: min(360px, 100%); display: grid; gap: 16px; align-content: center; }
-.tour-k { margin: 0; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em; color: #9FAEA3; }
-.tour-k b { color: #EDA56C; font-weight: 700; }
+.tour-k { margin: 0; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .12em; color: var(--t-mute); }
+.tour-k b { color: var(--t-accent); font-weight: 700; }
 .tour-copy { display: grid; gap: 10px; min-height: 9.5em; }
 .tour-copy.swap { animation: tourSwap .45s cubic-bezier(.2,.8,.2,1); }
 @keyframes tourSwap { from { opacity: 0; transform: translateY(8px); } }
-.tour-h { margin: 0; font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.08; letter-spacing: -0.03em; font-stretch: 88%; color: #F3EEDF; }
-.tour-p { margin: 0; font-size: 1.02rem; line-height: 1.55; color: #D6D0BF; }
+.tour-h { margin: 0; font-size: clamp(1.5rem, 2.6vw, 2rem); line-height: 1.08; letter-spacing: -0.03em; font-stretch: 88%; color: var(--t-h); }
+.tour-p { margin: 0; font-size: 1.02rem; line-height: 1.55; color: var(--t-p); }
 .tour-dashes { display: flex; gap: 6px; }
 .tour-dash { position: relative; flex: 1 1 0; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; }
-.tour-dash::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 2px; background: rgba(236, 230, 214, .18); transition: background-color .35s; }
+.tour-dash::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 2px; background: var(--t-dash); transition: background-color .35s; }
 .tour-dash.done::before { background: rgba(208, 138, 78, .55); }
 .tour-dash.on::before { background: linear-gradient(90deg, #D08A4E, #F2A263); }
 .tour-ctl { display: flex; gap: 10px; }
 .tour-back, .tour-next { min-height: 44px; padding: 0 20px; border-radius: 999px; font: inherit; font-weight: 600; font-size: .92rem; cursor: pointer; transition: border-color .2s, background-color .2s, opacity .2s; }
-.tour-back { border: 1px solid rgba(236, 230, 214, .22); background: transparent; color: #F3EEDF; }
+.tour-back { border: 1px solid var(--t-line); background: transparent; color: var(--t-h); }
 .tour-back:hover { border-color: #D08A4E; }
 .tour-back[disabled] { opacity: .35; cursor: default; }
-.tour-next { flex: 1; border: 0; background: #F3EEDF; color: #16291F; }
-.tour-next:hover { background: #fff; }
-.tour-note { margin: 4px 0 0; font-size: .74rem; line-height: 1.45; color: #8E9C92; }
+.tour-next { flex: 1; border: 0; background: var(--t-next); color: var(--t-next-ink); }
+.tour-next:hover { background: var(--t-next-hover); }
+.tour-note { margin: 4px 0 0; font-size: .74rem; line-height: 1.45; color: var(--t-mute); }
 @media (max-width: 760px) {
   dialog.tour { width: 100%; height: 100%; max-height: 100%; margin: 0; border-radius: 0; }
   .tour-bar { padding: calc(10px + env(safe-area-inset-top, 0px)) 12px 2px 16px; }
@@ -1218,7 +1242,7 @@ dialog.tour.wide { width: min(1180px, calc(100% - 40px)); }
 .tour.wide .tour-body { flex-direction: column; justify-content: center; gap: 18px; padding-top: 4px; }
 .tour-screen { --sw: min(100%, calc((100vh - 330px) * 1600 / 894)); height: auto; width: var(--sw); aspect-ratio: 1600 / 894; }
 @supports (height: 100dvh) { .tour-screen { --sw: min(100%, calc((100dvh - 330px) * 1600 / 894)); } }
-.tour-screen .tour-shot { border-radius: 14px; background: #07090C; box-shadow: 0 40px 70px -34px rgba(0, 0, 0, .9), 0 0 0 6px rgba(236, 230, 214, .035); }
+.tour-screen .tour-shot { border-radius: 14px; background: #07090C; box-shadow: var(--t-frame-shadow); }
 .tour-pan { position: absolute; left: 0; top: 0; width: 1600px; height: 894px; transform-origin: 0 0; transition: transform .7s cubic-bezier(.65,0,.35,1); }
 .tour-pan.instant, .tour-pan.instant ~ .tour-spot { transition: none; }
 .tour-pan img { width: 100%; height: 100%; }
@@ -1579,6 +1603,12 @@ dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards
 .sim .demo-hint { flex-wrap: nowrap; align-items: flex-start; }
 .sim .dh-t { min-width: 0; line-height: 1.45; }
 .sim .dh-dot { margin-top: calc(.95rem * 1.45 / 2 - 4px); }
+
+/* standards finder: all answers share one spot (demos.js), so switching questions cross-fades without the card moving */
+.sr-result { position: relative; }
+.sr-pane { grid-area: 1 / 1; display: grid; gap: 16px; align-content: start; opacity: 0; visibility: hidden; transition: opacity .22s ease, visibility 0s linear .22s; }
+.sr-pane.on { opacity: 1; visibility: visible; transition: opacity .3s ease .08s, visibility 0s; }
+@media (max-width: 760px) { .sr-pane { gap: 12px; } }
 
 </style>
 </head>
@@ -3194,9 +3224,19 @@ dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards
   function boardBack(fadeMs, delayMs) {        // the live board, already drawn at rest this frame, is back on the page
     canvasHome(false);
     ghost.style.display = ''; ghost.style.transition = ''; ghost.style.opacity = '';
+    // faded back (nothing flew back): it settles into place as it appears, a touch smaller at first, like the page's own
+    // opening, instead of simply switching on
+    // (the numbers settle with it, so they stay on their landmarks)
+    var bl = document.getElementById('balloons'), settle = 'transform ' + Math.round(fadeMs * 1.6) + 'ms cubic-bezier(.16, 1, .3, 1) ' + (delayMs || 0) + 'ms';
+    if (fadeMs) canvas.style.transform = 'scale(.965)';   // (the numbers were set small with it when the card closed)
     void canvas.offsetWidth;
-    canvas.style.transition = fadeMs ? 'opacity ' + fadeMs + 'ms ease ' + (delayMs || 0) + 'ms' : 'none';
-    canvas.style.opacity = '';
+    canvas.style.transition = fadeMs ? 'opacity ' + fadeMs + 'ms cubic-bezier(.4, 0, .2, 1) ' + (delayMs || 0) + 'ms, ' + settle : 'none';
+    canvas.style.opacity = ''; canvas.style.transform = '';
+    if (fadeMs && bl) {
+      // (and they only come back once the board is mostly there, never floating over an empty page first)
+      bl.style.transition = 'opacity .5s ease 390ms, ' + settle; bl.style.transform = '';
+      setTimeout(function () { bl.style.transition = ''; }, (delayMs || 0) + fadeMs * 1.6 + 600);   // back to the stylesheet's own
+    }
   }
   // closing: the camera starts pulling back out the moment the card starts to dissolve (fast away, gentle landing)
   document.addEventListener('sheet:closing', function () {
@@ -3207,6 +3247,9 @@ dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards
       if (!o) {
         // nothing to follow back (the picture was scrolled out of sight, or on a phone or tablet the card doesn't cover
         // the way back): the camera is simply home again, and the board fades back in on the page as the card dissolves
+        // (the numbers wait for the board: their fade-in is set before they start it)
+        var bq = document.getElementById('balloons');
+        if (bq) { bq.style.transition = 'none'; bq.style.opacity = '0'; bq.style.transform = 'scale(.965)'; void bq.offsetWidth; bq.style.transition = 'opacity .5s ease 390ms, transform 0s'; bq.style.opacity = ''; }
         zoom = null; fly = null; fig.classList.remove('zooming'); endFlightAfterRender = 'fade';
         paused = false; cancelAnimationFrame(raf); last = performance.now(); raf = requestAnimationFrame(frame);
         return;
@@ -3405,7 +3448,7 @@ dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards
         if (trip) { canvasHome(false); if (window.YVA.landed) window.YVA.landed(canvas); }
       } else {                                              // and here, the live board again (faded in if nothing flew back)
         // (faded in once the card has mostly gone, so its picture and the board are never seen through each other)
-        boardBack(how === 'fade' ? 180 : 0, how === 'fade' ? 140 : 0);
+        boardBack(how === 'fade' ? 460 : 0, how === 'fade' ? 110 : 0);
         if (trip && window.YVA.backDone) window.YVA.backDone();
       }
     }
@@ -4188,18 +4231,25 @@ dialog.sheet[open].closing::backdrop { animation: backdropOut .18s ease forwards
     ];
     var qs = $$('.sr-q');
     function node(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
-    function render(i) {
-      var r = DATA[i];
-      qs.forEach(function (q, j) { q.setAttribute('aria-pressed', String(i === j)); });
-      box.innerHTML = '';
-      box.style.animation = 'none'; void box.offsetWidth; box.style.animation = '';
+    /* every answer is built once and stacked in the same spot, so switching questions cross-fades in place: the box keeps
+       the height of the tallest answer, and nothing on the card moves or jumps */
+    var live = node('p', 'sr-only'); live.setAttribute('aria-live', 'polite'); box.removeAttribute('aria-live');
+    var panes = DATA.map(function (r) {
+      var pane = node('div', 'sr-pane');
       var b1 = node('div', 'sr-block'); b1.appendChild(node('span', 'label', 'Matched on'));
       var terms = node('div', 'terms'); r.tags.forEach(function (t) { terms.appendChild(node('span', 'term', t)); }); b1.appendChild(terms);
       var b2 = node('div', 'sr-block'); b2.appendChild(node('span', 'label', 'Best match'));
       var doc = node('div', 'doc main'); doc.appendChild(node('span', 'doc-id', r.main.id + ' · ' + r.main.type)); doc.appendChild(node('span', 'doc-t', r.main.title)); doc.appendChild(node('span', 'doc-x', r.main.note)); b2.appendChild(doc);
       var b3 = node('div', 'sr-block'); b3.appendChild(node('span', 'label', 'Related requirements'));
       var ul = node('ul', 'docs'); r.rel.forEach(function (x) { var li = node('li', 'doc'); li.appendChild(node('span', 'doc-id', x.id)); li.appendChild(node('span', 'doc-t', x.title)); ul.appendChild(li); }); b3.appendChild(ul);
-      [b1, b2, b3].forEach(function (b) { box.appendChild(b); });
+      [b1, b2, b3].forEach(function (x) { pane.appendChild(x); });
+      box.appendChild(pane); return pane;
+    });
+    box.appendChild(live);
+    function render(i) {
+      qs.forEach(function (q, j) { q.setAttribute('aria-pressed', String(i === j)); });
+      panes.forEach(function (p, j) { p.classList.toggle('on', i === j); p.setAttribute('aria-hidden', String(i !== j)); });
+      live.textContent = 'Best match: ' + DATA[i].main.title + '. ' + DATA[i].rel.length + ' related requirements.';
     }
     qs.forEach(function (q, j) { q.addEventListener('click', function () { render(j); }); });
     render(0);
